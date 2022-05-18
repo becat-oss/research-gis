@@ -11,7 +11,7 @@ export type Feature ={
 };
 
 export type FeatureGeometry ={
-  coordinates:[number,number],
+  coordinates:number[],
   type:string,
 }
 

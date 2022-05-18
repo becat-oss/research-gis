@@ -1,5 +1,5 @@
-import { Feature, GeoJsonData } from "../../AppTypes";
-import { FeatureGroup, GeoJSON, MapContainer,TileLayer,useMap,Popup, Circle } from "react-leaflet"
+import { Feature } from "../../AppTypes";
+import { FeatureGroup,Popup, Circle } from "react-leaflet"
 import 'leaflet/dist/leaflet.css';
 
 interface Props{
@@ -9,7 +9,7 @@ interface Props{
 
 export function GeoJsonFeature({feature,index}:Props):React.ReactElement{
   return (
-    <FeatureGroup color="purple" key={index}>
+    <FeatureGroup key={index}>
       <Popup>
         <p>{feature.properties.Title}</p>
         <button
@@ -29,8 +29,7 @@ export function GeoJsonFeature({feature,index}:Props):React.ReactElement{
           feature.geometry.coordinates[1],
           feature.geometry.coordinates[0]
         ]}
-        fillColor="#ff7800"
-        radius ={200}
+        radius ={100}
         color={"#000"}
         weight={1}
         fillOpacity={0.8}
