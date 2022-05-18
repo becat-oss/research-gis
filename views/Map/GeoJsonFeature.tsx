@@ -31,7 +31,8 @@ export function GeoJsonFeature({feature,index}:Props):React.ReactElement{
         ]}
         radius ={100}
         color={"#000"}
-        weight={1}
+        fillColor = {"#eb3434"}
+        weight={0.5}
         fillOpacity={0.8}
       ></Circle>
     </FeatureGroup>

@@ -16,7 +16,7 @@ export function Map(){
   const toggle = () => setModal(!modal);
 
   return(
-    <MapContainer center={[33.58,130.22]} zoom={10} scrollWheelZoom={true}  style={{ height: "100vh" }}>
+    <MapContainer center={[33.58,130.22]} zoom={12} scrollWheelZoom={true}  style={{ height: "100vh" }}>
       <LayersControl position="topright">
         <LayersControl.Overlay name="team A">
           <Marker position={[33.58,130.22]}>
