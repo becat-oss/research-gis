@@ -1,6 +1,7 @@
 import axios from "axios"
 import {GeoJSON} from "react-leaflet"
 
+//道路とかのベクタータイル表示用
 async function getGeoJson(url:string){
   const response = await fetch(url);
   return response.json;

@@ -12,12 +12,16 @@ export type Feature ={
 };
 
 export type FeatureGeometry ={
-  coordinates:number[],
+  coordinates:number[]|number[][][],
   type:string,
 }
 
 export type FeatureProperties={
   Title:string,
+}
+
+export type Attribute={
+  [key:string]:number,
 }
 
 export type SiteOutline = Coordinate[]

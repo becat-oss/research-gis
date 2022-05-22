@@ -6,9 +6,11 @@ import 'leaflet-draw/dist/leaflet.draw.css';
 import { useMapContext } from "./mapContext";
 import { useState } from "react";
 import { teamB } from "../../public/static/teamB";
+import { Fukuoka } from "../../public/static/Fukuoka";
+import { GdpPerCapita } from "../../public/static/gdpPerCapita";
 import { GeoJsonFeature } from "./GeoJsonFeature";
-import VectorTileLayer from "react-leaflet-vector-tile-layer";
 import PolylineComponent from "./Polyline";
+import { PolygonFeature } from "./Polygon";
 
 export function Map(){
   const { siteOutline,setSiteOutline } = useMapContext();
@@ -19,7 +21,7 @@ export function Map(){
 
   return(
     <MapContainer center={[33.58,130.22]} zoom={12} scrollWheelZoom={true}  style={{ height: "100vh" }}>
-      <PolylineComponent />
+      
       <LayersControl position="topright">
         <LayersControl.Overlay name="team B" checked>
           <LayerGroup>
@@ -28,8 +30,17 @@ export function Map(){
             })}
           </LayerGroup>
         </LayersControl.Overlay>
-        <LayersControl.Overlay name="道路">
-          
+        <LayersControl.Overlay name="google map route">
+          <PolylineComponent />
+        </LayersControl.Overlay>
+        <LayersControl.Overlay name="令和1年一人あたりGDP(万円)">
+          <LayerGroup>
+            {Fukuoka.features.map((feature,index)=>{
+              const value = GdpPerCapita[feature.id.replace('福岡県','')];
+              console.log('attribute',feature.id.replace('福岡県',''),value)
+              return <PolygonFeature feature={feature} index={index} value={value}/>
+            })}
+          </LayerGroup>
         </LayersControl.Overlay>
         <LayersControl.Overlay name="土地条件">
           {/* Legendを入れたいhttps://cyberjapandata.gsi.go.jp/legend/lcm25k_2012/lc_legend.pdf */}
