@@ -9,6 +9,7 @@ export type Feature ={
   geometry:FeatureGeometry,
   properties:FeatureProperties,
   type:string,
+  id:string,
 };
 
 export type FeatureGeometry ={
