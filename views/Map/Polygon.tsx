@@ -12,18 +12,6 @@ interface Props{
 
 const blackOptions = { color: 'black' }
 
-//TODO: color barの作り方をBAUES Analysisから学ぶ
-function getColor(d:number){
-  return d > 1000 ? '#800026' :
-         d > 900  ? '#BD0026' :
-         d > 800  ? '#E31A1C' :
-         d > 700  ? '#FC4E2A' :
-         d > 600   ? '#FD8D3C' :
-         d > 500   ? '#FEB24C' :
-         d > 400   ? '#FED976' :
-                    '#FFEDA0';
-}
-
 function style( value:number){
   const maximum = 1100;
   const minimum = 700;

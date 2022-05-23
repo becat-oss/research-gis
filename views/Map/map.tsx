@@ -11,6 +11,7 @@ import { GdpPerCapita } from "../../public/static/gdpPerCapita";
 import { GeoJsonFeature } from "./GeoJsonFeature";
 import PolylineComponent from "./Polyline";
 import { PolygonFeature } from "./Polygon";
+import Route from "./Route";
 
 export function Map(){
   const { siteOutline,setSiteOutline } = useMapContext();
@@ -31,7 +32,7 @@ export function Map(){
           </LayerGroup>
         </LayersControl.Overlay>
         <LayersControl.Overlay name="google map route">
-          <PolylineComponent />
+          <Route />
         </LayersControl.Overlay>
         <LayersControl.Overlay name="令和1年一人あたりGDP(万円)">
           <LayerGroup>
