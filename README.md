@@ -1,34 +1,27 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# research-gis  
+BeCATスタジオ課題のリサーチ結果を表示するwebアプリです。  
 
-## Getting Started
+## 表示できるデータ  
+### 1. Google mapから書き出した地点データ(Point)  
+<img width="629" alt="points" src="https://user-images.githubusercontent.com/90674244/169740091-f680b5d1-ed4a-45e0-814a-493f6ed10864.png">   
 
-First, run the development server:
+[デモサイト](https://research-byr6xmzbp-katsuya0719.vercel.app/)で確認することができます。
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+### 2. 国土地理院が公開しているラスターデータ   
+<img width="953" alt="raster" src="https://user-images.githubusercontent.com/90674244/169740139-5fea059c-5982-43b5-a5f5-21283a9fca6c.png">  
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 3. 自治体が公開している統計データ  
+例えば、福岡県が公開している市町村別の就業者一人当たりの市町村内総生産は以下のように可視化できます。  
+[元データ](https://ckan.open-governmentdata.org/dataset/401000_sityousonminkeizaikeisan_h23-r1/resource/be3dd009-1fec-412a-a8dc-394025aa9c76?inner_span=True)  
+<img width="952" alt="choropleth" src="https://user-images.githubusercontent.com/90674244/169740267-747a89a3-89f1-43cf-8ae5-b0fd09e51efb.png">  
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+### 4. Google mapから取得できるルートデータ(準備中）  
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+### 5. 国土地理院が公開している道路、鉄道などのベクトルデータ(準備中）  
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+### データの入力  
+データを可視化できるだけでなく、ユーザーが入力できる入力機能も実装予定です。  
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
