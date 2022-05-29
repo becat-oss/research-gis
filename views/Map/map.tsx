@@ -12,17 +12,16 @@ import { GeoJsonFeature } from "./GeoJsonFeature";
 import PolylineComponent from "./Polyline";
 import { PolygonFeature } from "./Polygon";
 import Route from "./Route";
+import Choropleth from "./Choropleth";
+import InputPoint from "./InputPointData";
+import InputPoints from "./InputPointData/InputPoints";
 
 export function Map(){
-  const { siteOutline,setSiteOutline } = useMapContext();
-  const [modal,setModal] = useState(false);
-  const [selectedFeature,setSelectedFeature] = useState({});
-
-  const toggle = () => setModal(!modal);
+  const { choroplethData } = useMapContext();
 
   return(
     <MapContainer center={[33.58,130.22]} zoom={12} scrollWheelZoom={true}  style={{ height: "100vh" }}>
-      
+      <InputPoint />
       <LayersControl position="topright">
         <LayersControl.Overlay name="team B" checked>
           <LayerGroup>
@@ -34,12 +33,11 @@ export function Map(){
         <LayersControl.Overlay name="google map route">
           <Route />
         </LayersControl.Overlay>
-        <LayersControl.Overlay name="令和1年一人あたりGDP(万円)">
+        <LayersControl.Overlay name="Choropleth Map">
           <LayerGroup>
             {Fukuoka.features.map((feature,index)=>{
-              const value = GdpPerCapita[feature.id.replace('福岡県','')];
-              console.log('attribute',feature.id.replace('福岡県',''),value)
-              return <PolygonFeature feature={feature} index={index} value={value}/>
+              const value = choroplethData[feature.id.replace('福岡県','')];
+              return <Choropleth feature={feature} index={index} value={value}/>
             })}
           </LayerGroup>
         </LayersControl.Overlay>
@@ -51,10 +49,12 @@ export function Map(){
           />
         </LayersControl.Overlay>
         <LayersControl.Overlay name="傾斜量図">
-          <TileLayer
-            opacity={0.5}
-            url="https://cyberjapandata.gsi.go.jp/xyz/slopemap/{z}/{x}/{y}.png"
-          />
+          <LayerGroup>
+            <TileLayer
+              opacity={0.5}
+              url="https://cyberjapandata.gsi.go.jp/xyz/slopemap/{z}/{x}/{y}.png"
+            />
+          </LayerGroup>
         </LayersControl.Overlay>
         <LayersControl.Overlay name="色別標高図">
           <TileLayer

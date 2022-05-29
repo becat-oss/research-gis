@@ -24,7 +24,7 @@ interface Props{
 
 export default function ColorBar({marks}:Props):React.ReactElement{
   const theme = useTheme();
-  const {min,max} = useMapContext();
+  const {min,max,setMin,setMax} = useMapContext();
   const delta = max - min;
   return(
     <Box
@@ -48,7 +48,7 @@ export default function ColorBar({marks}:Props):React.ReactElement{
           id="form-max"
           variant="standard"
           onChange={(e)=>{
-            console.log("not yet implemented")
+            setMax(Number(e.target.value));
           }}
           value ={max}
           sx={{ backgroundColor: 'transparent', p: 1 }}
@@ -74,7 +74,7 @@ export default function ColorBar({marks}:Props):React.ReactElement{
           id="form-min"
           variant="standard"
           onChange={(e)=>{
-            console.log("not yet implemented")
+            setMin(Number(e.target.value));
           }}
           value ={min}
           sx={{ backgroundColor: 'transparent', p: 1 }}

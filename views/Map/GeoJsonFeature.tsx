@@ -7,6 +7,7 @@ interface Props{
   index:number,
 }
 
+//TODO:リファクタリング必要
 export function GeoJsonFeature({feature,index}:Props):React.ReactElement{
   return (
     <FeatureGroup key={index}>

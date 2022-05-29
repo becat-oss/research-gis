@@ -2,14 +2,14 @@
 // interface Props{
 
 import ColorBar from "./ColorBar";
+import { useMapContext } from "./mapContext";
 
 // }
 
 export default function ColorScale(){
   //minとmaxを計算する
   //今はとりあえず仮で置いておく
-  const max = 1100;
-  const min = 700;
+  const {min,max} = useMapContext();
   const unit = '万円';
   const precision = 0;
 
