@@ -4,14 +4,21 @@ import { GdpPerCapita } from "../../public/static/gdpPerCapita";
 import { GdpDeltaPerCapita } from "../../public/static/gdpDeltaPerCapita";
 import { Tag } from "@mui/icons-material";
 
-export const ChoroplethDataSet ={
+export const choroplethKeys = ["gdpPerCapita","gdpDeltaPerCapita"] as const;
+export type ChoroplethKey = typeof choroplethKeys[number];
+
+const choroplethValues = [GdpPerCapita,GdpDeltaPerCapita] as const;
+type ChoroplethValues = typeof choroplethValues[number];
+
+type ChoroplethDataSet={
+  [key in ChoroplethKey]:ChoroplethValues
+}
+
+const choroplethDataSet:ChoroplethDataSet ={
   "gdpPerCapita":GdpPerCapita,
   "gdpDeltaPerCapita":GdpDeltaPerCapita
 }
 
-export const choroplethKeys =Object.keys(ChoroplethDataSet);
-
-export type ChoroplethKey = typeof choroplethKeys[number];
 
 function calcMinMaxFromAttributeData(data:AttributeData):[number,number]{
   const values = Object.values(data);
@@ -120,16 +127,16 @@ export function MapProvider({children}:MapProviderProps):React.ReactElement{
   },[siteOutline])
 
   useEffect(()=>{
-    setChoroplethData(ChoroplethDataSet[choroplethKey].data);
+    setChoroplethData(choroplethDataSet[choroplethKey].data);
 
     //min,maxをsetする
-    const [min,max]=calcMinMaxFromAttributeData(ChoroplethDataSet[choroplethKey].data);
+    const [min,max]=calcMinMaxFromAttributeData(choroplethDataSet[choroplethKey].data);
     setMin(min);
     setMax(max);
 
     //unit,title,descriptionをsetする
-    setUnit(ChoroplethDataSet[choroplethKey].unit);
-    setDescription(ChoroplethDataSet[choroplethKey].description);
+    setUnit(choroplethDataSet[choroplethKey].unit);
+    setDescription(choroplethDataSet[choroplethKey].description);
     
   },[choroplethKey])
 

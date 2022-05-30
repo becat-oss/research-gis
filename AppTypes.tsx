@@ -23,14 +23,21 @@ export type GeoJsonData ={
 }
 
 export type Feature ={
-  geometry:FeatureGeometry,
+  geometry:PolygonGeometry|PointGeometry,
   properties:FeatureProperties,
   type:string,
   id:string,
 };
 
-export type FeatureGeometry ={
-  coordinates:number[]|number[][][],
+export type PolygonGeometry ={
+  //coordinates:number[]|number[][][],
+  coordinates:number[][][][],
+  type:string,
+}
+
+export type PointGeometry ={
+  //coordinates:number[]|number[][][],
+  coordinates:number[],
   type:string,
 }
 

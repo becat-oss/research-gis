@@ -25,7 +25,7 @@ export function GeoJsonFeature({feature,index}:Props):React.ReactElement{
           More Info
         </button>
       </Popup>
-      <Circle
+      {/* <Circle
         center={[
           feature.geometry.coordinates[1],
           feature.geometry.coordinates[0]
@@ -35,7 +35,7 @@ export function GeoJsonFeature({feature,index}:Props):React.ReactElement{
         fillColor = {"#eb3434"}
         weight={0.5}
         fillOpacity={0.8}
-      ></Circle>
+      ></Circle> */}
     </FeatureGroup>
   )
 }

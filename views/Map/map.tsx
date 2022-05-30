@@ -23,13 +23,13 @@ export function Map(){
     <MapContainer center={[33.58,130.22]} zoom={12} scrollWheelZoom={true}  style={{ height: "100vh" }}>
       <InputPoint />
       <LayersControl position="topright">
-        <LayersControl.Overlay name="team B" checked>
+        {/* <LayersControl.Overlay name="team B" checked>
           <LayerGroup>
             {teamB.features.map((feature,index)=>{
               return <GeoJsonFeature feature={feature} index={index}/>
             })}
           </LayerGroup>
-        </LayersControl.Overlay>
+        </LayersControl.Overlay> */}
         <LayersControl.Overlay name="google map route">
           <Route />
         </LayersControl.Overlay>
@@ -37,7 +37,7 @@ export function Map(){
           <LayerGroup>
             {Fukuoka.features.map((feature,index)=>{
               const value = choroplethData[feature.id.replace('福岡県','')];
-              return <Choropleth feature={feature} index={index} value={value}/>
+              return <Choropleth geometry={feature.geometry} regionId={feature.id} index={index} value={value}/>
             })}
           </LayerGroup>
         </LayersControl.Overlay>

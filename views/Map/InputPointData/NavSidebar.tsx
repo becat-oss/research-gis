@@ -9,9 +9,9 @@ export function Content():React.ReactElement{
   const {layers} = useMapContext();
 
   //checkboxのレイヤーをクリックできないようにする必要
-  const toggleVisibleLayer = (e,layer:string) =>{
+  // const toggleVisibleLayer = (e,layer:string) =>{
     
-  }
+  // }
 
   return (
     <FormGroup>
@@ -21,9 +21,9 @@ export function Content():React.ReactElement{
             //TODO:checkbox押したら、レイヤーの表示、非表示切り替わるようにする
             <FormControlLabel label={layer} control={
             <Checkbox defaultChecked 
-              onChange={e=>{
+              // onChange={e=>{
 
-              }}
+              // }}
             />}  
             />
           )

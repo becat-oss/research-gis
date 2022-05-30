@@ -1,6 +1,6 @@
 import React from "react";
 import { FeatureGroup, Popup } from "react-leaflet";
-import { Feature } from "../../../AppTypes";
+import { Feature, PolygonGeometry } from "../../../AppTypes";
 import { PolygonFeature } from "../Polygon";
 import hsl from 'hsl-to-hex';
 import { threeAdjustment, hueMaxMap as hueMax, hueMin, defaultSaturation, defaultLightness } from '../../../utils/Color';
@@ -11,7 +11,8 @@ import DataSelector from "./dataSelector";
 import ChoroplethPopup from "./Popup";
 
 interface Props{
-  feature:Feature,
+  geometry:PolygonGeometry,
+  regionId:string,
   index:number,
   value:number
 }
@@ -26,17 +27,18 @@ function valueToColor(value:number, min:number, max:number){
   }
 }
 
-export default function Choropleth({feature,index,value}:Props):React.ReactElement{
+export default function Choropleth({geometry,regionId,index,value}:Props):React.ReactElement{
   const {min,max,unit,description} = useMapContext();
   
-  const polygonElm:number[] = feature.geometry.coordinates[0][0].map(coord=>{
+  const polygonElm:number[][] = geometry.coordinates[0][0].map(coord=>{
     return [coord[1],coord[0]]
   })
 
+  console.log('polygonElm',polygonElm);
   return (
     <>
       <FeatureGroup key={index}>
-        <ChoroplethPopup id={feature.id} value={value} unit={unit} description={description} />
+        <ChoroplethPopup id={regionId} value={value} unit={unit} description={description} />
         <PolygonFeature polygon={polygonElm} pathOption={valueToColor(value, min, max)} />
       </FeatureGroup>
     </>

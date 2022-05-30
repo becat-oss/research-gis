@@ -29,32 +29,16 @@ export function drawLayer(inputPointDataSet:InputPointData[]):JSX.Element[]{
   )
 }
 
-export default function InputPoints():JSX.Element[][]{
-  const {groupedInputPointDataSet,visibleLayers,inputPointDataSet} = useMapContext();
+export default function InputPoints():React.ReactElement{
+  const {groupedInputPointDataSet,visibleLayers} = useMapContext();
 
-  //こっちだとうまくいく
-  // return(
-  //   inputPointDataSet.map((pointData:InputPointData,index:number)=>{
-  //     return (
-  //       <>
-  //         <Tooltip key={pointData.description}>
-  //           <p>{pointData.value}</p>
-  //           <p>{pointData.description}</p>
-  //         </Tooltip>
-  //         <Circle 
-  //           radius = {50}
-  //           center={[pointData.coordinate.lat, pointData.coordinate.lng]}
-  //           key={pointData.description}
-  //         >
-  //         </Circle>
-  //       </>
-  //     )
-  //   })
-  // )
   return(
-    visibleLayers.map(key=>{
-      return drawLayer(groupedInputPointDataSet[key])
-    })
+    <>
+      {visibleLayers.map(key=>{
+        return drawLayer(groupedInputPointDataSet[key])
+      })}
+    </>
+    
   )
 
   // return test;

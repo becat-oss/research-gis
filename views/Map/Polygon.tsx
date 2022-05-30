@@ -6,7 +6,7 @@ interface PathOption {
   color: string;
 }
 interface Props{
-  polygon:number[],
+  polygon:number[][],
   pathOption:PathOption,
 }
 
