@@ -8,8 +8,9 @@ import { useMapContext } from "../mapContext";
 export function Content():React.ReactElement{
   const {layers} = useMapContext();
 
-  const toggleVisibleLayer = (e) =>{
-    console.log('e',e);
+  //checkboxのレイヤーをクリックできないようにする必要
+  const toggleVisibleLayer = (e,layer:string) =>{
+    
   }
 
   return (
@@ -18,7 +19,13 @@ export function Content():React.ReactElement{
         layers.map((layer)=>{
           return(
             //TODO:checkbox押したら、レイヤーの表示、非表示切り替わるようにする
-            <FormControlLabel label={layer} control={<Checkbox defaultChecked onChange={toggleVisibleLayer}/>}  />
+            <FormControlLabel label={layer} control={
+            <Checkbox defaultChecked 
+              onChange={e=>{
+
+              }}
+            />}  
+            />
           )
         })
       }
