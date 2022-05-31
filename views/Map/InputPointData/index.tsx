@@ -7,7 +7,6 @@ import InputPoints from "./InputPoints";
 import NavSidebar from "./NavSidebar";
 
 export default function InputPoint():React.ReactElement|null{
-  const {inputPointData,setInputPointData} = useMapContext();
   const [position,setPosition] = useState<[number,number]|null>(null);
   const [coordinate,setCoordinate] = useState<Coordinate|null>(null);
   const [open,setOpen] = useState(false);

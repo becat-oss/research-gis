@@ -35,7 +35,6 @@ export default function Choropleth({geometry,regionId,index,value}:Props):React.
     return [coord[1],coord[0]] as LatLngExpression
   })
 
-  console.log('polygonElm',polygonElm);
   return (
     <>
       <FeatureGroup key={index}>

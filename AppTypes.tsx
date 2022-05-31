@@ -1,10 +1,11 @@
 import { LatLngExpression } from "leaflet";
 
 export type InputPointData ={
+  id:string,
   coordinate:Coordinate,
   tag:string,
   description:string,
-  value:number|string
+  value:number
 }
 
 //group by tag

@@ -13,7 +13,7 @@ export function drawLayer(inputPointDataSet:InputPointData[]):JSX.Element[]{
     inputPointDataSet.map((pointData:InputPointData,index:number)=>{
       return (
         <>
-          <Tooltip key={pointData.description}>
+          <Tooltip key={pointData.id}>
             <p>{pointData.value}</p>
             <p>{pointData.description}</p>
           </Tooltip>
@@ -31,7 +31,8 @@ export function drawLayer(inputPointDataSet:InputPointData[]):JSX.Element[]{
 
 export default function InputPoints():React.ReactElement{
   const {groupedInputPointDataSet,visibleLayers} = useMapContext();
-
+  //groupedInputPointDataSetの生成がうまくいってない
+  console.log('groupedInputPointDataSet',groupedInputPointDataSet);
   return(
     <>
       {visibleLayers.map(key=>{

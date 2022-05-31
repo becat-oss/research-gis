@@ -3,6 +3,7 @@ import React, { useState, useMemo, useContext, useEffect, useCallback } from "re
 import { GdpPerCapita } from "../../public/static/gdpPerCapita";
 import { GdpDeltaPerCapita } from "../../public/static/gdpDeltaPerCapita";
 import { Tag } from "@mui/icons-material";
+import { fetchPoints } from "../../pages/api/KeyRequests";
 
 export const choroplethKeys = ["gdpPerCapita","gdpDeltaPerCapita"] as const;
 export type ChoroplethKey = typeof choroplethKeys[number];
@@ -74,7 +75,7 @@ const initialState: MapState = {
   description:'一人当たり総生産（令和1年度）',
   setDescription:()=>{},
   inputPointDataSet:[],
-  inputPointData:{coordinate:{"lat":33.58,"lng":130.22},tag:'default',description:'',value:1},
+  inputPointData:{id:'1',coordinate:{"lat":33.58,"lng":130.22},tag:'default',description:'',value:1},
   setInputPointData:()=>{},
   groupedInputPointDataSet:{},
   layers:[],
@@ -126,6 +127,7 @@ export function MapProvider({children}:MapProviderProps):React.ReactElement{
     
   },[siteOutline])
 
+  //choroplethKeyが変更されたとき
   useEffect(()=>{
     setChoroplethData(choroplethDataSet[choroplethKey].data);
 
@@ -140,6 +142,25 @@ export function MapProvider({children}:MapProviderProps):React.ReactElement{
     
   },[choroplethKey])
 
+  //画面を初期描画時
+  useEffect(()=>{
+    async function getPoints(){
+      const response = await fetchPoints();
+
+      setInputPointDataSet(response);
+      // response.map(data=>{
+      //   if (data === null) return;
+      //   console.log('initialization',data,groupedInputPointDataSet);
+      //   groupInputPointDataSet(data,groupedInputPointDataSet);
+      //   setLayers(Object.keys(groupedInputPointDataSet));
+      // })
+      
+    };
+
+    getPoints();
+  },[])
+
+  //inputPointDataが追加されたとき
   useEffect(()=>{
     if (inputPointData === null) return;
     setInputPointDataSet([...inputPointDataSet,inputPointData]);
@@ -149,6 +170,7 @@ export function MapProvider({children}:MapProviderProps):React.ReactElement{
   },[inputPointData])
 
   function groupInputPointDataSet(input:InputPointData,groupedInputPointDataSet:GroupedInputPointData){
+    //console.log('groupInputPointDataSet',input,groupedInputPointDataSet);
     const groupTag = input.tag;
 
     if (groupedInputPointDataSet[groupTag]){
@@ -162,7 +184,15 @@ export function MapProvider({children}:MapProviderProps):React.ReactElement{
   }
 
   useEffect(()=>{
+    //関数が呼ばれすぎ問題
+    inputPointDataSet.map(data=>{
+      if (data === null) return;
+      console.log('initialization',data,groupedInputPointDataSet);
+      groupInputPointDataSet(data,groupedInputPointDataSet);
+    })
+    setLayers(Object.keys(groupedInputPointDataSet));
     console.log('inputPointDataSet',inputPointDataSet);
+    console.log('groupedInputPointDataSet',groupedInputPointDataSet);
   },[inputPointDataSet])
 
 
