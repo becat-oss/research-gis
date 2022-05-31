@@ -1,4 +1,5 @@
 import React from "react";
+import { LatLngExpression }  from "leaflet";
 import { FeatureGroup, Popup } from "react-leaflet";
 import { Feature, PolygonGeometry } from "../../../AppTypes";
 import { PolygonFeature } from "../Polygon";
@@ -30,8 +31,8 @@ function valueToColor(value:number, min:number, max:number){
 export default function Choropleth({geometry,regionId,index,value}:Props):React.ReactElement{
   const {min,max,unit,description} = useMapContext();
   
-  const polygonElm:number[][] = geometry.coordinates[0][0].map(coord=>{
-    return [coord[1],coord[0]]
+  const polygonElm:LatLngExpression[] = geometry.coordinates[0][0].map(coord=>{
+    return [coord[1],coord[0]] as LatLngExpression
   })
 
   console.log('polygonElm',polygonElm);

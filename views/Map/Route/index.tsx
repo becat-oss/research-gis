@@ -1,10 +1,11 @@
 import React from "react";
+import { LatLngExpression } from "leaflet";
 import PolylineComponent from "../Polyline";
 import { googleMaps } from "../../../public/static/googleMap";
 import { Circle, FeatureGroup, Popup } from "react-leaflet";
 
 export default function Route():React.ReactElement{
-  const polyline:number[][] =[]
+  const polyline:LatLngExpression[] =[]
   googleMaps.routes[0].legs[0].steps.forEach(step => {
     polyline.push([step.start_location.lat,step.start_location.lng])
     polyline.push([step.end_location.lat,step.end_location.lng])

@@ -1,4 +1,5 @@
 import React from "react";
+import { LatLngExpression } from "leaflet";
 import { FeatureGroup, Polygon, Popup } from "react-leaflet";
 import { Attribute, Feature } from "../../AppTypes";
 
@@ -6,7 +7,7 @@ interface PathOption {
   color: string;
 }
 interface Props{
-  polygon:number[][],
+  polygon:LatLngExpression[],
   pathOption:PathOption,
 }
 

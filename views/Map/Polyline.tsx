@@ -5,7 +5,7 @@ import { googleMaps } from "../../public/static/googleMap";
 const blackOptions = { color: 'red' }
 
 interface Props{
-  polyline:number[][]
+  polyline:LatLngExpression[]
 }
 
 export default function PolylineComponent({polyline}:Props){
