@@ -75,7 +75,8 @@ const initialState: MapState = {
   description:'一人当たり総生産（令和1年度）',
   setDescription:()=>{},
   inputPointDataSet:[],
-  inputPointData:{id:'1',coordinate:{"lat":33.58,"lng":130.22},tag:'default',description:'',value:1},
+  //inputPointData:{id:'1',coordinate:{"lat":33.58,"lng":130.22},tag:'default',description:'',value:1},
+  inputPointData:null,
   setInputPointData:()=>{},
   groupedInputPointDataSet:{},
   layers:[],
@@ -146,24 +147,29 @@ export function MapProvider({children}:MapProviderProps):React.ReactElement{
   useEffect(()=>{
     async function getPoints(){
       const response = await fetchPoints();
-
-      setInputPointDataSet(response);
-      // response.map(data=>{
-      //   if (data === null) return;
-      //   console.log('initialization',data,groupedInputPointDataSet);
-      //   groupInputPointDataSet(data,groupedInputPointDataSet);
-      //   setLayers(Object.keys(groupedInputPointDataSet));
-      // })
-      
+      response.map(data=>{
+        if (data === null) return;
+        groupInputPointDataSet(data,groupedInputPointDataSet);
+        setLayers(Object.keys(groupedInputPointDataSet));
+      })
     };
-
+    //FIXME:なぜか2回呼ばれている。初期描画時に一回だけ呼ぶようにしたい
     getPoints();
+    console.log('get data from server');
   },[])
+
+  useEffect(()=>{
+    console.log('layers',layers);
+  },[layers])
+
+  useEffect(()=>{
+    console.log('groupedInputPointDataSet',groupedInputPointDataSet);
+  },[groupedInputPointDataSet])
 
   //inputPointDataが追加されたとき
   useEffect(()=>{
     if (inputPointData === null) return;
-    setInputPointDataSet([...inputPointDataSet,inputPointData]);
+    //setInputPointDataSet([...inputPointDataSet,inputPointData]);
 
     groupInputPointDataSet(inputPointData,groupedInputPointDataSet);
     setLayers(Object.keys(groupedInputPointDataSet));
@@ -172,28 +178,25 @@ export function MapProvider({children}:MapProviderProps):React.ReactElement{
   function groupInputPointDataSet(input:InputPointData,groupedInputPointDataSet:GroupedInputPointData){
     //console.log('groupInputPointDataSet',input,groupedInputPointDataSet);
     const groupTag = input.tag;
-
+    // console.log('groupedInputPointDataSet[groupTag]',groupedInputPointDataSet[groupTag]);
     if (groupedInputPointDataSet[groupTag]){
       //既にgroupTagがある場合
-      groupedInputPointDataSet[groupTag].push(input);
+      groupedInputPointDataSet[groupTag].add(input);
     }else{
-      groupedInputPointDataSet[groupTag] = [input];
+      groupedInputPointDataSet[groupTag]=new Set([input]);
       setVisibleLayers([...visibleLayers,groupTag]);
     }
     setGroupedInputPointDataSet(groupedInputPointDataSet);
   }
 
-  useEffect(()=>{
-    //関数が呼ばれすぎ問題
-    inputPointDataSet.map(data=>{
-      if (data === null) return;
-      console.log('initialization',data,groupedInputPointDataSet);
-      groupInputPointDataSet(data,groupedInputPointDataSet);
-    })
-    setLayers(Object.keys(groupedInputPointDataSet));
-    console.log('inputPointDataSet',inputPointDataSet);
-    console.log('groupedInputPointDataSet',groupedInputPointDataSet);
-  },[inputPointDataSet])
+  // useEffect(()=>{
+  //   inputPointDataSet.map(data=>{
+  //     if (data === null) return;
+  //     console.log('initialization',data,groupedInputPointDataSet);
+  //     groupInputPointDataSet(data,groupedInputPointDataSet);
+  //   })
+  //   setLayers(Object.keys(groupedInputPointDataSet));
+  // },[inputPointDataSet])
 
 
 

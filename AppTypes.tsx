@@ -10,7 +10,7 @@ export type InputPointData ={
 
 //group by tag
 export type GroupedInputPointData ={
-  [key:string]:InputPointData[]
+  [key:string]:Set<InputPointData>
 }
 
 export type Layer={

@@ -1,20 +1,22 @@
-import { Checkbox, FormControlLabel } from "@mui/material";
+import { Checkbox, FormControlLabel, FormLabel } from "@mui/material";
 import FormGroup from "@mui/material/FormGroup";
 import Box from "@mui/system/Box";
 import React from "react";
 import Sidebar from "../../../components/Sidebar";
 import { useMapContext } from "../mapContext";
 
-export function Content():React.ReactElement{
-  const {layers} = useMapContext();
+interface Props{
+  layers:string[]
+}
 
+export function Content({layers}:Props):React.ReactElement{
   //checkboxのレイヤーをクリックできないようにする必要
   // const toggleVisibleLayer = (e,layer:string) =>{
     
   // }
-
   return (
     <FormGroup>
+      <FormLabel component="label">Tags</FormLabel>
       {
         layers.map((layer)=>{
           return(
@@ -34,6 +36,9 @@ export function Content():React.ReactElement{
 }
 
 export default function NavSidebar():React.ReactElement{
+  const {layers} = useMapContext();
+
+  console.log('layers',layers);
   return(
     <Sidebar anchor="left" swipeable={false}>
       <Box
@@ -41,11 +46,11 @@ export default function NavSidebar():React.ReactElement{
           display: 'flex',
           flex: '1 0',
           flexDirection: 'column',
-          height: (theme) => `calc(100vh - 50px)`,
+          height: (theme) => `calc(100vh - 100px)`,
           borderRight: (theme) => `1px solid ${theme.palette.divider}`,
         }}
       >
-        <Content />
+        <Content layers={layers}/>
       </Box>
     </Sidebar>
   )

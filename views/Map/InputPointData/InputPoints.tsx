@@ -36,7 +36,7 @@ export default function InputPoints():React.ReactElement{
   return(
     <>
       {visibleLayers.map(key=>{
-        return drawLayer(groupedInputPointDataSet[key])
+        return drawLayer(Array.from(groupedInputPointDataSet[key].values()));
       })}
     </>
     
