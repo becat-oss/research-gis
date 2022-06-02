@@ -1,5 +1,5 @@
 import { SiteOutline, Coordinate, Attribute, MinMax, AttributeData, InputPointData, GroupedInputPointData, Layer } from "../../AppTypes";
-import React, { useState, useMemo, useContext, useEffect, useCallback } from "react";
+import React, { useState, useMemo, useContext, useEffect, useCallback, RefObject, useRef } from "react";
 import { GdpPerCapita } from "../../public/static/gdpPerCapita";
 import { GdpDeltaPerCapita } from "../../public/static/gdpDeltaPerCapita";
 import { Tag } from "@mui/icons-material";
@@ -55,6 +55,7 @@ interface MapState{
   visibleLayers:string[];
   addVisibleLayers: (layer:string)=>void;
   removeVisibleLayers: (layer:string)=>void;
+  ref: RefObject<HTMLDivElement> | null;
 }
 
 const initialState: MapState = {
@@ -83,6 +84,7 @@ const initialState: MapState = {
   visibleLayers:[],
   addVisibleLayers:()=>{},
   removeVisibleLayers:()=>{},
+  ref: null
 }
 
 export const MapContext = React.createContext<MapState>(initialState);
@@ -105,6 +107,7 @@ export function MapProvider({children}:MapProviderProps):React.ReactElement{
   const [groupedInputPointDataSet,setGroupedInputPointDataSet]=useState(initialState.groupedInputPointDataSet);
   const [layers,setLayers]=useState(initialState.layers);
   const [visibleLayers,setVisibleLayers]=useState(initialState.visibleLayers);
+  const ref = useRef<HTMLDivElement | null>(null);
 
   const addVisibleLayers=useCallback((layer:string)=>{
     const newVisibleLayers=visibleLayers.concat(layer);
@@ -162,9 +165,9 @@ export function MapProvider({children}:MapProviderProps):React.ReactElement{
     console.log('layers',layers);
   },[layers])
 
-  useEffect(()=>{
-    console.log('groupedInputPointDataSet',groupedInputPointDataSet);
-  },[groupedInputPointDataSet])
+  // useEffect(()=>{
+  //   console.log('groupedInputPointDataSet',groupedInputPointDataSet);
+  // },[groupedInputPointDataSet])
 
   //inputPointDataが追加されたとき
   useEffect(()=>{
@@ -198,8 +201,6 @@ export function MapProvider({children}:MapProviderProps):React.ReactElement{
   //   setLayers(Object.keys(groupedInputPointDataSet));
   // },[inputPointDataSet])
 
-
-
   const mapState = useMemo(():MapState=>{
     return{
       siteOutline,
@@ -225,7 +226,8 @@ export function MapProvider({children}:MapProviderProps):React.ReactElement{
       layers,
       visibleLayers,
       addVisibleLayers,
-      removeVisibleLayers
+      removeVisibleLayers,
+      ref
     }
   },[
     siteOutline,

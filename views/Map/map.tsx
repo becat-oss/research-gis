@@ -17,23 +17,32 @@ import InputPoint from "./InputPointData";
 import InputPoints from "./InputPointData/InputPoints";
 
 export function Map(){
-  const { choroplethData } = useMapContext();
+  const { choroplethData,ref } = useMapContext();
 
   return(
-    <MapContainer center={[33.58,130.22]} zoom={12} scrollWheelZoom={true}  style={{ height: "100vh" }}>
+    <MapContainer center={[33.58,130.22]} zoom={12} scrollWheelZoom={true}  style={{ height: "100vh" ,marginLeft:"200px"}}>
       <InputPoint />
-      <LayersControl position="topright">
-        {/* <LayersControl.Overlay name="team B" checked>
+
+      {/* <LayersControl position="topright">
+        <LayersControl.Overlay name="team B" checked>
           <LayerGroup>
             {teamB.features.map((feature,index)=>{
               return <GeoJsonFeature feature={feature} index={index}/>
             })}
           </LayerGroup>
-        </LayersControl.Overlay> */}
+        </LayersControl.Overlay> 
         <LayersControl.Overlay name="google map route">
           <Route />
+        </LayersControl.Overlay> */}
+        {/* <LayersControl.Overlay name="土地条件">
+          
+          <TileLayer
+            opacity={0.5}
+            url="https://cyberjapandata.gsi.go.jp/xyz/lcm25k_2012/{z}/{x}/{y}.png"
+          />
         </LayersControl.Overlay>
-        <LayersControl.Overlay name="Choropleth Map">
+      </LayersControl> */}
+        {/* <LayersControl.Overlay name="Choropleth Map">
           <LayerGroup>
             {Fukuoka.features.map((feature,index)=>{
               const value = choroplethData[feature.id.replace('福岡県','')];
@@ -41,13 +50,7 @@ export function Map(){
             })}
           </LayerGroup>
         </LayersControl.Overlay>
-        <LayersControl.Overlay name="土地条件">
-          {/* Legendを入れたいhttps://cyberjapandata.gsi.go.jp/legend/lcm25k_2012/lc_legend.pdf */}
-          <TileLayer
-            opacity={0.5}
-            url="https://cyberjapandata.gsi.go.jp/xyz/lcm25k_2012/{z}/{x}/{y}.png"
-          />
-        </LayersControl.Overlay>
+        
         <LayersControl.Overlay name="傾斜量図">
           <LayerGroup>
             <TileLayer
@@ -74,13 +77,13 @@ export function Map(){
             attribution='国土地理院：土砂災害警戒区域（土石流）'
             url='https://disaportaldata.gsi.go.jp/raster/05_dosekiryukeikaikuiki/{z}/{x}/{y}.png'
           />
-        </LayersControl.Overlay>
-      </LayersControl>
+        </LayersControl.Overlay> */}
+      
       
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
+      /> 
     </MapContainer>
   )
 }

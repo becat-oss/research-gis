@@ -45,6 +45,7 @@ const mutation = `
 
 async function createPoint(point:InputPointData) {
   //coordinateの型を変換する必要
+  //とりあえずcreateGis mutationに関してうまくいくようにする
   await API.graphql({
     query: mutation,
     variables: point

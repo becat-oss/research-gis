@@ -1,48 +1,37 @@
-import React,{useMemo, useState} from "react";
+import React,{useMemo,  RefObject, useRef} from "react";
 import { Coordinate, InputPointData } from "../../../AppTypes";
 
-// interface InputPointDataState{
-//   inputPointDataSet:InputPointData[];
-//   addInputPointDataSet:React.Dispatch<React.SetStateAction<InputPointData[]>>;
-// }
+interface InputPointDataState{
+  ref: RefObject<HTMLDivElement> | null;
+}
 
-// const initialState:InputPointDataState = {
-//   inputPointDataSet:[],
-//   addInputPointDataSet:(InputPointData)=>{},
-// }
+const initialState:InputPointDataState = {
+  ref: null
+}
 
-// export const InputPointDataContext = React.createContext<InputPointDataState>(initialState);
+export const InputPointDataContext = React.createContext<InputPointDataState>(initialState);
 
-// interface InputPointDataProviderProps{
-//   children: React.ReactNode;
-// }
+interface InputPointDataProviderProps{
+  children: React.ReactNode;
+}
 
-// export function InputPointDataProvider({children}:InputPointDataProviderProps):React.ReactElement{
-//   const [inputPointDataSet,setInputPointDataSet]=useState(initialState.inputPointDataSet);
+export function InputPointDataProvider({children}:InputPointDataProviderProps):React.ReactElement{
+  const ref = useRef<HTMLDivElement | null>(null);
 
-//   const addInputPointDataSet =(point:Coordinate,tag:string,description:string,value:number)=>{
-//     addInputPointDataSet([...inputPointDataSet,{
-//       point:point,
-//       tag:tag,
-//       description:description,
-//       value:value,
-//     }]);
-//   }
+  const InputPointDataState = useMemo(():InputPointDataState=>{
+    return{
+      ref
+    }
+  },[])
+  return(
+    <InputPointDataContext.Provider value={InputPointDataState}>
+      {children}
+    </InputPointDataContext.Provider>
+  )
+}
 
-//   const InputPointDataState = useMemo(():InputPointDataState=>{
-//     return{
-//       inputPointDataSet,
-//       addInputPointDataSet,
-//     }
-//   },[inputPointDataSet])
-//   return(
-//     <InputPointDataContext.Provider value={InputPointDataState}>
-//       {children}
-//     </InputPointDataContext.Provider>
-//   )
-// }
+export function useInputPointDataContext():InputPointDataState{
+  return React.useContext(InputPointDataContext);
+}
 
-// export function useInputPointDataContext():InputPointDataState{
-//   return React.useContext(InputPointDataContext);
-// }
 

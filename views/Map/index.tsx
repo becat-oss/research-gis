@@ -10,10 +10,10 @@ export default function MapIndex(){
       <MapProvider>
         <Map />
         {/* layerの表示、非表示に応じてsidebarの表示、非表示を切り替えたい */}
-        <Sidebar>
+        {/* <Sidebar>
           <DataSelector/>
           <ColorScale />
-        </Sidebar>
+        </Sidebar> */}
       </MapProvider>
     </> 
   )

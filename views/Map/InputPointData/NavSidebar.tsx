@@ -1,4 +1,4 @@
-import { Checkbox, FormControlLabel, FormLabel } from "@mui/material";
+import { Button, Checkbox, FormControlLabel, FormLabel } from "@mui/material";
 import FormGroup from "@mui/material/FormGroup";
 import Box from "@mui/system/Box";
 import React from "react";
@@ -10,7 +10,7 @@ interface Props{
 }
 
 export function Content({layers}:Props):React.ReactElement{
-  //checkboxのレイヤーをクリックできないようにする必要
+  const {addVisibleLayers,removeVisibleLayers} = useMapContext();
   // const toggleVisibleLayer = (e,layer:string) =>{
     
   // }
@@ -21,13 +21,17 @@ export function Content({layers}:Props):React.ReactElement{
         layers.map((layer)=>{
           return(
             //TODO:checkbox押したら、レイヤーの表示、非表示切り替わるようにする
-            <FormControlLabel label={layer} control={
+            <FormControlLabel key={layer} label={layer} control={
             <Checkbox defaultChecked 
-              // onChange={e=>{
-
-              // }}
-            />}  
+              onChange={e=>{
+                if(e.target.checked){
+                  addVisibleLayers(layer);
+                }else{
+                  removeVisibleLayers(layer);
+                }
+              }}
             />
+            } />
           )
         })
       }
@@ -38,7 +42,6 @@ export function Content({layers}:Props):React.ReactElement{
 export default function NavSidebar():React.ReactElement{
   const {layers} = useMapContext();
 
-  console.log('layers',layers);
   return(
     <Sidebar anchor="left" swipeable={false}>
       <Box
@@ -52,6 +55,9 @@ export default function NavSidebar():React.ReactElement{
       >
         <Content layers={layers}/>
       </Box>
+      <Button variant="contained">
+        保存
+      </Button>
     </Sidebar>
   )
 }
