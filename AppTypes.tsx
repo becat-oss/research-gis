@@ -16,6 +16,7 @@ export type GroupedInputPointData ={
 export type Layer={
   name:string,
   visible:boolean,
+  color:string
 }
 
 export type GeoJsonData ={
