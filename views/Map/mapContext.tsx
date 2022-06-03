@@ -3,7 +3,7 @@ import React, { useState, useMemo, useContext, useEffect, useCallback, RefObject
 import { GdpPerCapita } from "../../public/static/gdpPerCapita";
 import { GdpDeltaPerCapita } from "../../public/static/gdpDeltaPerCapita";
 import { Tag } from "@mui/icons-material";
-import { fetchPoints } from "../../pages/api/KeyRequests";
+import { fetchLayers, fetchPoints } from "../../pages/api/KeyRequests";
 import { Layer } from "../../utils/Layer";
 import { InputPoint } from "../../utils/InputPoint";
 
@@ -49,7 +49,7 @@ interface MapState{
   description:string;
   setDescription: (description:string)=>void;
   //InputPointData用
-  inputPointDataSet:InputPointData[];
+  inputPointSet:InputPoint[];
   inputPoint:InputPoint|null;
   setInputPoint: (inputPoint:InputPoint)=>void,
   groupedInputPointData:GroupedInputPoint;
@@ -79,7 +79,7 @@ const initialState: MapState = {
   setUnit:()=>{},
   description:'一人当たり総生産（令和1年度）',
   setDescription:()=>{},
-  inputPointDataSet:[],
+  inputPointSet:[],
   //inputPointData:{id:'1',coordinate:{"lat":33.58,"lng":130.22},tag:'default',description:'',value:1},
   inputPoint:null,
   setInputPoint:()=>{},
@@ -108,7 +108,7 @@ export function MapProvider({children}:MapProviderProps):React.ReactElement{
   const [description,setDescription]=useState(initialState.description);
   const [choroplethKey,setChoroplethKey]=useState(initialState.choroplethKey);
   const [choroplethData,setChoroplethData]=useState(initialState.choroplethData);
-  const [inputPointDataSet,setInputPointDataSet]=useState(initialState.inputPointDataSet);
+  const [inputPointSet,setInputPointSet]=useState(initialState.inputPointSet);
   const [inputPoint,setInputPoint]=useState(initialState.inputPoint);
   const [groupedInputPointData,setGroupedInputPointData]=useState(initialState.groupedInputPointData);
   const [layers,setLayers]=useState(initialState.layers);
@@ -161,22 +161,25 @@ export function MapProvider({children}:MapProviderProps):React.ReactElement{
 
   //画面を初期描画時
   useEffect(()=>{
-    async function getPoints(){
+    async function initializeData(){
       const response = await fetchPoints();
-      response.map(data=>{
-        if (data === null) return;
-        groupInputPointDataSet(data,groupedInputPointData);
-        //setLayers(Object.keys(groupedInputPointDataSet));
-        const newLayers=Object.keys(groupedInputPointData).map((key,index)=>{
-          return new Layer(key,index);
-        });
-        //FIXME:setLayersに一本化したい
-        setLayers(newLayers);
-        //setVisibleLayers(Object.keys(groupedInputPointData))
-      })
+      setInputPointSet(response);
+
+      const resLayers = await fetchLayers();
+      setLayers(resLayers);
+      // response.map(data=>{
+      //   if (data === null) return;
+      //   //groupInputPointDataSet(data,groupedInputPointData);
+      //   //setLayers(Object.keys(groupedInputPointDataSet));
+      //   const newLayers=Object.keys(groupedInputPointData).map((key,index)=>{
+      //     return new Layer(key,index);
+      //   });
+      //   //FIXME:setLayersに一本化したい
+      //   setLayers(newLayers);
+      // })
     };
     //FIXME:なぜか2回呼ばれている。初期描画時に一回だけ呼ぶようにしたい
-    getPoints();
+    initializeData();
     console.log('get data from server');
   },[])
 
@@ -185,13 +188,22 @@ export function MapProvider({children}:MapProviderProps):React.ReactElement{
     if (inputPoint === null) return;
     //setInputPointDataSet([...inputPointDataSet,inputPointData]);
     console.log('inputPoint',inputPoint)
-    groupInputPointDataSet(inputPoint,groupedInputPointData);
+    setInputPointSet([...inputPointSet,inputPoint]);
+    //TODO: layerも追加する
+    console.log('length',layers.filter(layer=>layer.name.includes(inputPoint.tag)).length);
+    if (layers.filter(layer=>layer.name.includes(inputPoint.tag)).length > 0) return;
+    setLayers([...layers,new Layer(inputPoint.tag,layers.length)]);
+    //groupInputPointDataSet(inputPoint,groupedInputPointData);
     //setLayers(Object.keys(groupedInputPointDataSet));
   },[inputPoint])
 
   useEffect(()=>{
     console.log('layers',layers)
   },[layers])
+
+  useEffect(()=>{
+    console.log('inputPointSet',inputPointSet)
+  },[inputPointSet])
 
   useEffect(()=>{
     console.log('GroupedInputPointData',groupedInputPointData);
@@ -241,7 +253,7 @@ export function MapProvider({children}:MapProviderProps):React.ReactElement{
       setDescription,
       inputPoint,
       setInputPoint,
-      inputPointDataSet,
+      inputPointSet,
       groupedInputPointData,
       layers,
       setLayers,
@@ -262,7 +274,7 @@ export function MapProvider({children}:MapProviderProps):React.ReactElement{
     unit,
     description,
     inputPoint,
-    inputPointDataSet,
+    inputPointSet,
     groupedInputPointData,
     layers,
     visibleLayers,

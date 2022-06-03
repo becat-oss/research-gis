@@ -1,6 +1,7 @@
-import { API } from 'aws-amplify';
+import { API, graphqlOperation } from 'aws-amplify';
 import { InputPoint } from '../../utils/InputPoint';
 import { InputPointData, InputPointPayload } from '../../AppTypes';
+import { Layer } from '../../utils/Layer';
 
 const query = `
   query listGis {
@@ -21,17 +22,36 @@ export async function fetchPoints(): Promise<InputPoint[]> {
   //型を変換する
   //@ts-ignore
   const points = res.data.listGis.items.map(point => {
-    // return {
-    //   ...point,
-    //   coordinate:{
-    //     lat: point.coordinate[0],
-    //     lng: point.coordinate[1]
-    //   },
-    // }
+
     return new InputPoint(point as InputPointPayload)
   })
 
   return points
+}
+
+const layerQuery = `
+  query listGisLayers {
+    listGisLayers {
+      items {
+        color
+        isVisible
+        name
+        userId
+      }
+    }
+  }
+`
+
+//TODO: Layerをデータベースから取得するコードを書く
+export async function fetchLayers(): Promise<Layer[]> {
+  const res = await API.graphql(graphqlOperation(layerQuery))
+  //型を変換する
+  //@ts-ignore
+  const layers = res.data.listGisLayers.items.map((layer:LayerPayload) => {
+    return new Layer(layer.name,layer.index,layer.isVisible,layer.color);
+  })
+
+  return layers
 }
 
 const mutation = `

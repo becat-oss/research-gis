@@ -1,4 +1,11 @@
 
+export type LayerPayload = {
+  userId: string;
+  name: string;
+  index:string;
+  isVisible: boolean;
+}
+
 export class Layer{
   name: string;
   color: string;

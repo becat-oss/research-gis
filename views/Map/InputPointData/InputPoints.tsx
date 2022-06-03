@@ -11,11 +11,11 @@ import { useInputPointDataContext } from "./InputPointDataContext";
 //   //color: string
 // }
 
-export function drawLayer(inputPointDataSet:InputPoint[],color:string):JSX.Element[]{
+export function drawLayer(inputPointSet:InputPoint[],color:string):JSX.Element[]{
   //const {ref} =useInputPointDataContext();
-
+  console.log('inputPointSet',inputPointSet);
   return(
-    inputPointDataSet.map((pointData:InputPoint,index:number)=>{
+    inputPointSet.map((pointData:InputPoint,index:number)=>{
 
       return (
         <FeatureGroup>      
@@ -38,16 +38,19 @@ export function drawLayer(inputPointDataSet:InputPoint[],color:string):JSX.Eleme
 }
 
 export default function InputPoints():React.ReactElement{
-  const {groupedInputPointData,layers} = useMapContext();
+  const {groupedInputPointData,layers,inputPointSet} = useMapContext();
   //groupedInputPointDataSetの生成がうまくいってない
   //前描かれているジオメトリは一度消すようにする
   const visibleLayers = layers.filter(layer => layer.isVisible);
+  // const visibleLayerNames = visibleLayers.map(layer => layer.name);
+  // const visiblePoints = inputPointSet.filter(obj => visibleLayerNames.includes(obj.tag))
   return(
     <>
       {visibleLayers.map(layer=>{
         return (
           <div key={layer.name}>
-            {drawLayer(Array.from(groupedInputPointData[layer.name].values()),layer.color)}
+            {drawLayer(inputPointSet.filter(obj => layer.name.includes(obj.tag)),layer.color)}
+            {/* {drawLayer(Array.from(groupedInputPointData[layer.name].values()),layer.color)} */}
           </div>
           );
       })}
