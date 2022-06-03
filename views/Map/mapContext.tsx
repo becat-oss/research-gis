@@ -54,6 +54,7 @@ interface MapState{
   groupedInputPointData:GroupedInputPoint;
   layers:Layer[];
   setLayers: (layers:Layer[])=>void;
+  updateLayers: (layers:Layer)=>void;
   visibleLayers:string[];
   addVisibleLayers: (layer:string)=>void;
   removeVisibleLayers: (layer:string)=>void;
@@ -84,6 +85,7 @@ const initialState: MapState = {
   groupedInputPointData:{},
   layers:[],
   setLayers:()=>{},
+  updateLayers:()=>{},
   visibleLayers:[],
   addVisibleLayers:()=>{},
   removeVisibleLayers:()=>{},
@@ -120,6 +122,11 @@ export function MapProvider({children}:MapProviderProps):React.ReactElement{
   const removeVisibleLayers=useCallback((layer:string)=>{
     const newVisibleLayers=visibleLayers.filter(visibleLayer=>visibleLayer!==layer);
     setVisibleLayers(newVisibleLayers);
+  },[layers])
+
+  const updateLayers = useCallback((layer:Layer)=>{
+    layers[layer.index]=layer;
+    setLayers(layers);
   },[layers])
 
   useEffect(()=>{
@@ -228,6 +235,7 @@ export function MapProvider({children}:MapProviderProps):React.ReactElement{
       groupedInputPointData,
       layers,
       setLayers,
+      updateLayers,
       visibleLayers,
       addVisibleLayers,
       removeVisibleLayers,

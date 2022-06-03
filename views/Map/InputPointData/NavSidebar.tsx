@@ -66,19 +66,19 @@ export function Content({layer,updateLayers}:Props):React.ReactElement{
 }
 
 export default function NavSidebar():React.ReactElement{
-  const {layers,setLayers} = useMapContext();
+  const {layers,setLayers,updateLayers} = useMapContext();
 
-  const updateLayer = useCallback((layer:Layer)=>{
-    layers[layer.index]=layer;
-    setLayers(layers);
-  },[layers])
+  // const updateLayer = useCallback((layer:Layer)=>{
+  //   layers[layer.index]=layer;
+  //   setLayers(layers);
+  // },[layers])
 
   return(
     <Sidebar anchor="left" swipeable={false}>
       <Grid container spacing={2}>
         {layers.map((layer)=>{
           return(
-            <Content layer={layer} updateLayers={updateLayer}/>
+            <Content layer={layer} updateLayers={updateLayers}/>
           )
         })}
       </Grid>
