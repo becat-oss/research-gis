@@ -1,5 +1,6 @@
 import { API } from 'aws-amplify';
-import { InputPointData } from '../../AppTypes';
+import { InputPoint } from '../../utils/InputPoint';
+import { InputPointData, InputPointPayload } from '../../AppTypes';
 
 const query = `
   query listGis {
@@ -15,19 +16,20 @@ const query = `
   }
 `
 
-export async function fetchPoints(){
+export async function fetchPoints(): Promise<InputPoint[]> {
   const res = await API.graphql({ query })
   //型を変換する
   //@ts-ignore
   const points = res.data.listGis.items.map(point => {
-    return {
-      ...point,
-      coordinate:{
-        lat: point.coordinate[0],
-        lng: point.coordinate[1]
-      },
-    }
-  }) as InputPointData[]
+    // return {
+    //   ...point,
+    //   coordinate:{
+    //     lat: point.coordinate[0],
+    //     lng: point.coordinate[1]
+    //   },
+    // }
+    return new InputPoint(point as InputPointPayload)
+  })
 
   return points
 }

@@ -1,4 +1,5 @@
 import { LatLngExpression } from "leaflet";
+import { InputPoint } from "./utils/InputPoint";
 
 export type InputPointData ={
   id:string,
@@ -8,9 +9,17 @@ export type InputPointData ={
   value:number
 }
 
+export type InputPointPayload ={
+  id:string,
+  coordinate:number[],
+  tag:string,
+  description:string,
+  value:number
+}
+
 //group by tag
-export type GroupedInputPointData ={
-  [key:string]:Set<InputPointData>
+export type GroupedInputPoint ={
+  [key:string]:Set<InputPoint>
 }
 
 export type Layer={

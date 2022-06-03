@@ -8,7 +8,7 @@ import Button from '@mui/material/Button';
 import {v4 as uuidv4} from 'uuid';
 import { useMapContext } from '../mapContext';
 import { Coordinate, InputPointData } from '../../../AppTypes';
-import { Point } from '../../../utils/Point';
+import { Point } from '../../../utils/InputPoint';
 
 interface Props{
   open:boolean,

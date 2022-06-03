@@ -2,6 +2,7 @@ import React,{useRef} from "react";
 import { FeatureGroup, LayersControl, Popup, Tooltip } from "react-leaflet";
 import { Circle } from "react-leaflet";
 import { InputPointData } from "../../../AppTypes";
+import { InputPoint } from "../../../utils/InputPoint";
 import { useMapContext } from "../mapContext";
 import { useInputPointDataContext } from "./InputPointDataContext";
 
@@ -9,10 +10,11 @@ import { useInputPointDataContext } from "./InputPointDataContext";
 //   inputPointDataSet:InputPointData[];
 // }
 
-export function drawLayer(inputPointDataSet:InputPointData[]):JSX.Element[]{
+export function drawLayer(inputPointDataSet:InputPoint[]):JSX.Element[]{
   const {ref} =useInputPointDataContext();
+  console.log('inputPointDataSet',inputPointDataSet);
   return(
-    inputPointDataSet.map((pointData:InputPointData,index:number)=>{
+    inputPointDataSet.map((pointData:InputPoint,index:number)=>{
 
       return (
         <FeatureGroup ref={ref}>      
@@ -35,17 +37,18 @@ export function drawLayer(inputPointDataSet:InputPointData[]):JSX.Element[]{
 }
 
 export default function InputPoints():React.ReactElement{
-  const {groupedInputPointDataSet,visibleLayers} = useMapContext();
-  const {ref} = useInputPointDataContext();
+  const {groupedInputPointData,layers} = useMapContext();
   //groupedInputPointDataSetの生成がうまくいってない
-  console.log('groupedInputPointDataSet',groupedInputPointDataSet);
+  console.log('groupedInputPointDataSet',groupedInputPointData);
   //前描かれているジオメトリは一度消すようにする
+  const visibleLayers = layers.filter(layer => layer.isVisible).map(layer => layer.name);
+  // console.log('visibleLayers',visibleLayers);
   return(
     <>
       {visibleLayers.map(key=>{
         return (
           <div key={key}>
-            {drawLayer(Array.from(groupedInputPointDataSet[key].values()))}
+            {drawLayer(Array.from(groupedInputPointData[key].values()))}
           </div>
           );
       })}

@@ -1,33 +1,44 @@
 import { Button, Checkbox, FormControlLabel, FormLabel, Grid } from "@mui/material";
 import FormGroup from "@mui/material/FormGroup";
 import Box from "@mui/system/Box";
-import React from "react";
+import React, { useState } from "react";
 import { Color, ColorPicker } from "material-ui-color";
 import Sidebar from "../../../components/Sidebar";
 import { useMapContext } from "../mapContext";
+import { Layer } from "../../../utils/Layer";
 
 interface Props{
   //layers:string[]
-  layer:string
+  layer:Layer
 }
 
+
+
 export function Content({layer}:Props):React.ReactElement{
-  const {addVisibleLayers,removeVisibleLayers} = useMapContext();
+  const { layers,setLayers } = useMapContext();
+
+  const [, setVisible] = useState<boolean>(layer.isVisible);
+  const visibleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setVisible(event.target.checked);
+    layer.isVisible = event.target.checked;
+    layers[layer.index]=layer;
+    console.log('layers',layers);
+    setLayers(layers);
+  };
   // const toggleVisibleLayer = (e,layer:string) =>{
-    
+  
   // }
   return (
     <>
-    
       <Grid item xs={6}>
-          {layer}
+          {layer.name}
       </Grid>
       <Grid item xs={3}>
           <FormControlLabel control={<Checkbox checked={layer.isVisible} onChange={visibleChange}/>} label="Visible" />
       </Grid>
-      <Grid item xs={3}>
+      {/* <Grid item xs={3}>
           <ColorPicker value={layer.color} onChange={colorChange} hideTextfield/>
-      </Grid>
+      </Grid> */}
     </>
     // <FormGroup>
     //   <FormLabel component="label">Tags</FormLabel>
@@ -60,7 +71,7 @@ export default function NavSidebar():React.ReactElement{
       <Grid container spacing={2}>
         {layers.map((layer)=>{
           return(
-            <Content key={layer} layer={layer}/>
+            <Content layer={layer}/>
           )
         })}
       </Grid>

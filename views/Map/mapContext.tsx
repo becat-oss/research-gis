@@ -1,9 +1,10 @@
-import { SiteOutline, Coordinate, Attribute, MinMax, AttributeData, InputPointData, GroupedInputPointData, Layer } from "../../AppTypes";
+import { SiteOutline, Coordinate, Attribute, MinMax, AttributeData, InputPointData, GroupedInputPoint } from "../../AppTypes";
 import React, { useState, useMemo, useContext, useEffect, useCallback, RefObject, useRef } from "react";
 import { GdpPerCapita } from "../../public/static/gdpPerCapita";
 import { GdpDeltaPerCapita } from "../../public/static/gdpDeltaPerCapita";
 import { Tag } from "@mui/icons-material";
 import { fetchPoints } from "../../pages/api/KeyRequests";
+import { Layer } from "../../utils/Layer";
 
 export const choroplethKeys = ["gdpPerCapita","gdpDeltaPerCapita"] as const;
 export type ChoroplethKey = typeof choroplethKeys[number];
@@ -50,8 +51,9 @@ interface MapState{
   inputPointDataSet:InputPointData[];
   inputPointData:InputPointData|null;
   setInputPointData: (inputPointData:InputPointData)=>void,
-  groupedInputPointDataSet:GroupedInputPointData;
-  layers:string[];
+  groupedInputPointData:GroupedInputPoint;
+  layers:Layer[];
+  setLayers: (layers:Layer[])=>void;
   visibleLayers:string[];
   addVisibleLayers: (layer:string)=>void;
   removeVisibleLayers: (layer:string)=>void;
@@ -79,8 +81,9 @@ const initialState: MapState = {
   //inputPointData:{id:'1',coordinate:{"lat":33.58,"lng":130.22},tag:'default',description:'',value:1},
   inputPointData:null,
   setInputPointData:()=>{},
-  groupedInputPointDataSet:{},
+  groupedInputPointData:{},
   layers:[],
+  setLayers:()=>{},
   visibleLayers:[],
   addVisibleLayers:()=>{},
   removeVisibleLayers:()=>{},
@@ -104,7 +107,7 @@ export function MapProvider({children}:MapProviderProps):React.ReactElement{
   const [choroplethData,setChoroplethData]=useState(initialState.choroplethData);
   const [inputPointDataSet,setInputPointDataSet]=useState(initialState.inputPointDataSet);
   const [inputPointData,setInputPointData]=useState(initialState.inputPointData);
-  const [groupedInputPointDataSet,setGroupedInputPointDataSet]=useState(initialState.groupedInputPointDataSet);
+  const [groupedInputPointData,setGroupedInputPointData]=useState(initialState.groupedInputPointData);
   const [layers,setLayers]=useState(initialState.layers);
   const [visibleLayers,setVisibleLayers]=useState(initialState.visibleLayers);
   const ref = useRef<HTMLDivElement | null>(null);
@@ -152,8 +155,12 @@ export function MapProvider({children}:MapProviderProps):React.ReactElement{
       const response = await fetchPoints();
       response.map(data=>{
         if (data === null) return;
-        groupInputPointDataSet(data,groupedInputPointDataSet);
-        setLayers(Object.keys(groupedInputPointDataSet));
+        groupInputPointDataSet(data,groupedInputPointData);
+        //setLayers(Object.keys(groupedInputPointDataSet));
+        const newLayers=Object.keys(groupedInputPointData).map((key,index)=>{
+          return new Layer(key,index);
+        });
+        setLayers(newLayers);
       })
     };
     //FIXME:なぜか2回呼ばれている。初期描画時に一回だけ呼ぶようにしたい
@@ -165,31 +172,27 @@ export function MapProvider({children}:MapProviderProps):React.ReactElement{
     console.log('layers',layers);
   },[layers])
 
-  // useEffect(()=>{
-  //   console.log('groupedInputPointDataSet',groupedInputPointDataSet);
-  // },[groupedInputPointDataSet])
-
   //inputPointDataが追加されたとき
   useEffect(()=>{
     if (inputPointData === null) return;
     //setInputPointDataSet([...inputPointDataSet,inputPointData]);
 
-    groupInputPointDataSet(inputPointData,groupedInputPointDataSet);
-    setLayers(Object.keys(groupedInputPointDataSet));
+    groupInputPointDataSet(inputPointData,groupedInputPointData);
+    //setLayers(Object.keys(groupedInputPointDataSet));
   },[inputPointData])
 
-  function groupInputPointDataSet(input:InputPointData,groupedInputPointDataSet:GroupedInputPointData){
+  function groupInputPointDataSet(input:InputPointData,groupedInputPointData:GroupedInputPoint){
     //console.log('groupInputPointDataSet',input,groupedInputPointDataSet);
     const groupTag = input.tag;
     // console.log('groupedInputPointDataSet[groupTag]',groupedInputPointDataSet[groupTag]);
-    if (groupedInputPointDataSet[groupTag]){
+    if (groupedInputPointData[groupTag]){
       //既にgroupTagがある場合
-      groupedInputPointDataSet[groupTag].add(input);
+      groupedInputPointData[groupTag].add(input);
     }else{
-      groupedInputPointDataSet[groupTag]=new Set([input]);
-      setVisibleLayers([...visibleLayers,groupTag]);
+      groupedInputPointData[groupTag]=new Set([input]);
+      //setVisibleLayers([...visibleLayers,groupTag]);
     }
-    setGroupedInputPointDataSet(groupedInputPointDataSet);
+    setGroupedInputPointData(groupedInputPointData);
   }
 
   // useEffect(()=>{
@@ -222,8 +225,9 @@ export function MapProvider({children}:MapProviderProps):React.ReactElement{
       inputPointData,
       setInputPointData,
       inputPointDataSet,
-      groupedInputPointDataSet,
+      groupedInputPointData,
       layers,
+      setLayers,
       visibleLayers,
       addVisibleLayers,
       removeVisibleLayers,
@@ -241,7 +245,7 @@ export function MapProvider({children}:MapProviderProps):React.ReactElement{
     description,
     inputPointData,
     inputPointDataSet,
-    groupedInputPointDataSet,
+    groupedInputPointData,
     layers,
     visibleLayers,
   ]);

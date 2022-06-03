@@ -1,18 +1,22 @@
 import {v4 as uuidv4} from 'uuid';
-import { Coordinate, InputPointData } from "../AppTypes";
+import { Coordinate, InputPointData, InputPointPayload } from "../AppTypes";
 
 
-export class Point{
+export class InputPoint{
   id: string;
   tag: string;
   coordinate: Coordinate;
   value: number;
   description: string;
-  constructor(inputPoint:InputPointData){
+  
+  constructor(inputPoint:InputPointPayload){
     //自動的にidを生成する
     this.id = uuidv4();
     this.tag = inputPoint.tag;
-    this.coordinate = inputPoint.coordinate;
+    this.coordinate = {
+      lat: inputPoint.coordinate[0],
+      lng: inputPoint.coordinate[1]
+    },
     this.value = inputPoint.value;
     this.description = inputPoint.description;
   }
