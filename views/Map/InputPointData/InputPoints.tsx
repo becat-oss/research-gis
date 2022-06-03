@@ -37,11 +37,11 @@ export function drawLayer(inputPointDataSet:InputPoint[]):JSX.Element[]{
 }
 
 export default function InputPoints():React.ReactElement{
-  const {groupedInputPointData,layers} = useMapContext();
+  const {groupedInputPointData,layers,visibleLayers} = useMapContext();
   //groupedInputPointDataSetの生成がうまくいってない
   console.log('groupedInputPointDataSet',groupedInputPointData);
   //前描かれているジオメトリは一度消すようにする
-  const visibleLayers = layers.filter(layer => layer.isVisible).map(layer => layer.name);
+  //const visibleLayers = layers.filter(layer => layer.isVisible).map(layer => layer.name);
   // console.log('visibleLayers',visibleLayers);
   return(
     <>

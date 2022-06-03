@@ -9,34 +9,38 @@ import { Layer } from "../../../utils/Layer";
 
 interface Props{
   //layers:string[]
-  layer:Layer
-  updateLayers:(layer:Layer)=>void
+  layer:string
+  //layer:Layer
+  //updateLayers:(layer:Layer)=>void
 }
 
 
 
-export function Content({layer,updateLayers}:Props):React.ReactElement{
-  //const { layers,setLayers } = useMapContext();
+export function Content({layer}:Props):React.ReactElement{
+  const { addVisibleLayers,removeVisibleLayers } = useMapContext();
 
-  const [, setVisible] = useState<boolean>(layer.isVisible);
-  const visibleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setVisible(event.target.checked);
-    layer.isVisible = event.target.checked;
-    updateLayers(layer);
-    //layers[layer.index]=layer;
-    //console.log('layers',layers);
-    //setLayers(layers);
-  };
-  // const toggleVisibleLayer = (e,layer:string) =>{
-  
-  // }
+  //const [, setVisible] = useState<boolean>(layer.isVisible);
+  // const visibleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setVisible(event.target.checked);
+  //   layer.isVisible = event.target.checked;
+  //   updateLayers(layer);
+
+  // };
+
   return (
     <>
       <Grid item xs={6}>
-          {layer.name}
+          {layer}
       </Grid>
       <Grid item xs={3}>
-          <FormControlLabel control={<Checkbox checked={layer.isVisible} onChange={visibleChange}/>} label="Visible" />
+          <FormControlLabel control={<Checkbox  defaultChecked 
+            onChange={e=>{
+              if(e.target.checked){
+                addVisibleLayers(layer);
+              }else{
+                removeVisibleLayers(layer);
+              }
+            }}/>} label="Visible" />
       </Grid>
       {/* <Grid item xs={3}>
           <ColorPicker value={layer.color} onChange={colorChange} hideTextfield/>
@@ -66,7 +70,7 @@ export function Content({layer,updateLayers}:Props):React.ReactElement{
 }
 
 export default function NavSidebar():React.ReactElement{
-  const {layers,setLayers,updateLayers} = useMapContext();
+  const {layers} = useMapContext();
 
   // const updateLayer = useCallback((layer:Layer)=>{
   //   layers[layer.index]=layer;
@@ -78,7 +82,7 @@ export default function NavSidebar():React.ReactElement{
       <Grid container spacing={2}>
         {layers.map((layer)=>{
           return(
-            <Content layer={layer} updateLayers={updateLayers}/>
+            <Content layer={layer.name}/>
           )
         })}
       </Grid>
