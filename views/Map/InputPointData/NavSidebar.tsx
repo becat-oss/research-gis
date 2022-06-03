@@ -1,7 +1,7 @@
 import { Button, Checkbox, FormControlLabel, FormLabel, Grid } from "@mui/material";
 import FormGroup from "@mui/material/FormGroup";
 import Box from "@mui/system/Box";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Color, ColorPicker } from "material-ui-color";
 import Sidebar from "../../../components/Sidebar";
 import { useMapContext } from "../mapContext";
@@ -10,20 +10,22 @@ import { Layer } from "../../../utils/Layer";
 interface Props{
   //layers:string[]
   layer:Layer
+  updateLayers:(layer:Layer)=>void
 }
 
 
 
-export function Content({layer}:Props):React.ReactElement{
-  const { layers,setLayers } = useMapContext();
+export function Content({layer,updateLayers}:Props):React.ReactElement{
+  //const { layers,setLayers } = useMapContext();
 
   const [, setVisible] = useState<boolean>(layer.isVisible);
   const visibleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setVisible(event.target.checked);
     layer.isVisible = event.target.checked;
-    layers[layer.index]=layer;
-    console.log('layers',layers);
-    setLayers(layers);
+    updateLayers(layer);
+    //layers[layer.index]=layer;
+    //console.log('layers',layers);
+    //setLayers(layers);
   };
   // const toggleVisibleLayer = (e,layer:string) =>{
   
@@ -64,14 +66,19 @@ export function Content({layer}:Props):React.ReactElement{
 }
 
 export default function NavSidebar():React.ReactElement{
-  const {layers} = useMapContext();
+  const {layers,setLayers} = useMapContext();
+
+  const updateLayer = useCallback((layer:Layer)=>{
+    layers[layer.index]=layer;
+    setLayers(layers);
+  },[layers])
 
   return(
     <Sidebar anchor="left" swipeable={false}>
       <Grid container spacing={2}>
         {layers.map((layer)=>{
           return(
-            <Content layer={layer}/>
+            <Content layer={layer} updateLayers={updateLayer}/>
           )
         })}
       </Grid>
