@@ -5,7 +5,7 @@ export class Layer{
   index: number;
   isVisible = true;
 
-  constructor(name: string, index: number,isVisible=true,color = '#ffffff',){
+  constructor(name: string, index: number,isVisible=true,color = '#0000FF',){
     this.name = name;
     this.color = color;
     this.index = index;

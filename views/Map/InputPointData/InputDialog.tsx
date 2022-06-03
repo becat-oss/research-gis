@@ -7,8 +7,8 @@ import FormControl from '@mui/material/FormControl';
 import Button from '@mui/material/Button';
 import {v4 as uuidv4} from 'uuid';
 import { useMapContext } from '../mapContext';
-import { Coordinate, InputPointData } from '../../../AppTypes';
-import { Point } from '../../../utils/InputPoint';
+import { Coordinate, InputPointData, InputPointPayload } from '../../../AppTypes';
+import { InputPoint } from '../../../utils/InputPoint';
 
 interface Props{
   open:boolean,
@@ -20,19 +20,26 @@ export default function InputDialog({open,handleClose,coordinate}:Props):React.R
   const [tag,setTag] = useState('');
   const [value,setValue] = useState<number>(0);
   const [description,setDescription] = useState('');
-  const {setInputPointData} = useMapContext();
+  const {setInputPoint} = useMapContext();
 
   const handleSubmit = () =>{
     if(coordinate === null) return;
     //IDを自動的にassignにするようにする
-    const inputPointData:InputPointData ={
-      id: uuidv4(),
-      coordinate,
+    // const inputPointData:InputPointData ={
+    //   id: uuidv4(),
+    //   coordinate,
+    //   tag,
+    //   description,
+    //   value,
+    // }
+    const inputPointData:InputPointPayload ={
+      coordinate:[coordinate.lat,coordinate.lng],
       tag,
       description,
-      value,
+      value
     }
-    setInputPointData(inputPointData);
+    const inputPoint = new InputPoint(inputPointData)
+    setInputPoint(inputPoint);
     handleClose();
   }
 

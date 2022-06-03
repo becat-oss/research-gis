@@ -9,15 +9,15 @@ import { Layer } from "../../../utils/Layer";
 
 interface Props{
   //layers:string[]
-  layer:string
-  //layer:Layer
+  //layer:string
+  layer:Layer
   //updateLayers:(layer:Layer)=>void
 }
 
 
-
+// 
 export function Content({layer}:Props):React.ReactElement{
-  const { addVisibleLayers,removeVisibleLayers } = useMapContext();
+  const { addVisibleLayers,removeVisibleLayers,updateLayers } = useMapContext();
 
   //const [, setVisible] = useState<boolean>(layer.isVisible);
   // const visibleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,20 +26,17 @@ export function Content({layer}:Props):React.ReactElement{
   //   updateLayers(layer);
 
   // };
-
+  //console.log('layer in sidebar',layer);
   return (
     <>
       <Grid item xs={6}>
-          {layer}
+          {layer.name}
       </Grid>
       <Grid item xs={3}>
           <FormControlLabel control={<Checkbox  defaultChecked 
             onChange={e=>{
-              if(e.target.checked){
-                addVisibleLayers(layer);
-              }else{
-                removeVisibleLayers(layer);
-              }
+              layer.isVisible = e.target.checked;
+              updateLayers(layer);
             }}/>} label="Visible" />
       </Grid>
       {/* <Grid item xs={3}>
@@ -71,18 +68,13 @@ export function Content({layer}:Props):React.ReactElement{
 
 export default function NavSidebar():React.ReactElement{
   const {layers} = useMapContext();
-
-  // const updateLayer = useCallback((layer:Layer)=>{
-  //   layers[layer.index]=layer;
-  //   setLayers(layers);
-  // },[layers])
-
+  //console.log('layers',layers);
   return(
     <Sidebar anchor="left" swipeable={false}>
       <Grid container spacing={2}>
         {layers.map((layer)=>{
           return(
-            <Content layer={layer.name}/>
+            <Content layer={layer}/>
           )
         })}
       </Grid>

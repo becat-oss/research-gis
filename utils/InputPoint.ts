@@ -11,7 +11,11 @@ export class InputPoint{
   
   constructor(inputPoint:InputPointPayload){
     //自動的にidを生成する
-    this.id = uuidv4();
+    if (inputPoint.id) {
+      this.id = inputPoint.id
+    }else{
+      this.id = uuidv4();
+    }
     this.tag = inputPoint.tag;
     this.coordinate = {
       lat: inputPoint.coordinate[0],

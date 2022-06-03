@@ -7,22 +7,23 @@ import { useMapContext } from "../mapContext";
 import { useInputPointDataContext } from "./InputPointDataContext";
 
 // interface Props{
-//   inputPointDataSet:InputPointData[];
+//   inputPointDataSet:InputPoint[];
+//   //color: string
 // }
 
-export function drawLayer(inputPointDataSet:InputPoint[]):JSX.Element[]{
-  const {ref} =useInputPointDataContext();
-  console.log('inputPointDataSet',inputPointDataSet);
+export function drawLayer(inputPointDataSet:InputPoint[],color:string):JSX.Element[]{
+  //const {ref} =useInputPointDataContext();
+
   return(
     inputPointDataSet.map((pointData:InputPoint,index:number)=>{
 
       return (
-        <FeatureGroup ref={ref}>      
+        <FeatureGroup>      
           <Circle 
             radius = {pointData.value*10}
             center={[pointData.coordinate.lat, pointData.coordinate.lng]}
             key={pointData.id}
-            
+            color ={color}
           >
             <Tooltip key={pointData.id}>
               <p>タグ:{pointData.tag}</p>
@@ -37,18 +38,16 @@ export function drawLayer(inputPointDataSet:InputPoint[]):JSX.Element[]{
 }
 
 export default function InputPoints():React.ReactElement{
-  const {groupedInputPointData,layers,visibleLayers} = useMapContext();
+  const {groupedInputPointData,layers} = useMapContext();
   //groupedInputPointDataSetの生成がうまくいってない
-  console.log('groupedInputPointDataSet',groupedInputPointData);
   //前描かれているジオメトリは一度消すようにする
-  //const visibleLayers = layers.filter(layer => layer.isVisible).map(layer => layer.name);
-  // console.log('visibleLayers',visibleLayers);
+  const visibleLayers = layers.filter(layer => layer.isVisible);
   return(
     <>
-      {visibleLayers.map(key=>{
+      {visibleLayers.map(layer=>{
         return (
-          <div key={key}>
-            {drawLayer(Array.from(groupedInputPointData[key].values()))}
+          <div key={layer.name}>
+            {drawLayer(Array.from(groupedInputPointData[layer.name].values()),layer.color)}
           </div>
           );
       })}

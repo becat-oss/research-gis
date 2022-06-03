@@ -10,7 +10,7 @@ export type InputPointData ={
 }
 
 export type InputPointPayload ={
-  id:string,
+  id?:string,
   coordinate:number[],
   tag:string,
   description:string,
