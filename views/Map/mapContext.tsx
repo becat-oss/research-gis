@@ -162,8 +162,8 @@ export function MapProvider({children}:MapProviderProps):React.ReactElement{
   },[])
 
   useEffect(()=>{
-    console.log('layers',layers);
-  },[layers])
+    console.log('visibleLayers',visibleLayers);
+  },[visibleLayers])
 
   // useEffect(()=>{
   //   console.log('groupedInputPointDataSet',groupedInputPointDataSet);

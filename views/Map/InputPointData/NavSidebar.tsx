@@ -2,7 +2,7 @@ import { Button, Checkbox, FormControlLabel, FormLabel, Grid } from "@mui/materi
 import FormGroup from "@mui/material/FormGroup";
 import Box from "@mui/system/Box";
 import React from "react";
-import { Color, ColorPicker } from "material-ui-color";
+//import { Color, ColorPicker } from "material-ui-color";
 import Sidebar from "../../../components/Sidebar";
 import { useMapContext } from "../mapContext";
 
@@ -23,11 +23,19 @@ export function Content({layer}:Props):React.ReactElement{
           {layer}
       </Grid>
       <Grid item xs={3}>
-          <FormControlLabel control={<Checkbox checked={layer.isVisible} onChange={visibleChange}/>} label="Visible" />
+          <FormControlLabel control={<Checkbox defaultChecked 
+          onChange={e=>{
+            if(e.target.checked){
+              addVisibleLayers(layer);
+            }else{
+              removeVisibleLayers(layer);
+            }
+          }}
+          />} label="Visible" />
       </Grid>
-      <Grid item xs={3}>
+      {/* <Grid item xs={3}>
           <ColorPicker value={layer.color} onChange={colorChange} hideTextfield/>
-      </Grid>
+      </Grid> */}
     </>
     // <FormGroup>
     //   <FormLabel component="label">Tags</FormLabel>
