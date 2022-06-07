@@ -2,7 +2,7 @@ import { LatLngExpression } from "leaflet";
 import { InputPoint } from "./utils/InputPoint";
 
 export type InputPointData ={
-  id:string,
+  id?:string,
   coordinate:Coordinate,
   tag:string,
   description:string,

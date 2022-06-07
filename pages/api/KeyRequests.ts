@@ -1,7 +1,7 @@
 import { API, graphqlOperation } from 'aws-amplify';
 import { InputPoint } from '../../utils/InputPoint';
 import { InputPointData, InputPointPayload } from '../../AppTypes';
-import { Layer } from '../../utils/Layer';
+import { Layer, LayerPayload } from '../../utils/Layer';
 
 const query = `
   query listGis {
@@ -37,10 +37,20 @@ const layerQuery = `
         isVisible
         name
         userId
+        index
       }
     }
   }
 `
+
+export async function createLayer(layer:LayerPayload) {
+  //coordinateの型を変換する必要
+  //とりあえずcreateGis mutationに関してうまくいくようにする
+  await API.graphql({
+    query: mutation,
+    variables: layer
+  })
+}
 
 //TODO: Layerをデータベースから取得するコードを書く
 export async function fetchLayers(): Promise<Layer[]> {
@@ -48,29 +58,36 @@ export async function fetchLayers(): Promise<Layer[]> {
   //型を変換する
   //@ts-ignore
   const layers = res.data.listGisLayers.items.map((layer:LayerPayload) => {
-    return new Layer(layer.name,layer.index,layer.isVisible,layer.color);
+    console.log('layer',layer)
+    return new Layer(layer.name,Number(layer.index),layer.isVisible,layer.color);
   })
 
   return layers
 }
 
 const mutation = `
-  mutation createResearchGis($createresearchgisinput: CreateResearchGisInput!) {
-    createResearchGis(input: $createresearchgisinput) {
+  mutation createGis($creategisinput: CreateGisInput!) {
+    createGis(input: $creategisinput) {
       id
       tag
+      coordinate
       value
       description
     }
   }
 `
 
-async function createPoint(point:InputPointData) {
+export async function createPoint(point:InputPoint) {
   //coordinateの型を変換する必要
   //とりあえずcreateGis mutationに関してうまくいくようにする
+
+  const params =  {
+    "creategisinput": point.toPayload()
+  }
+
   await API.graphql({
     query: mutation,
-    variables: point
+    variables: params
   })
   console.log('point',point)
 }

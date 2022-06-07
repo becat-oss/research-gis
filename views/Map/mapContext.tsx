@@ -186,15 +186,11 @@ export function MapProvider({children}:MapProviderProps):React.ReactElement{
   //inputPointDataが追加されたとき
   useEffect(()=>{
     if (inputPoint === null) return;
-    //setInputPointDataSet([...inputPointDataSet,inputPointData]);
-    console.log('inputPoint',inputPoint)
     setInputPointSet([...inputPointSet,inputPoint]);
     //TODO: layerも追加する
-    console.log('length',layers.filter(layer=>layer.name.includes(inputPoint.tag)).length);
     if (layers.filter(layer=>layer.name.includes(inputPoint.tag)).length > 0) return;
     setLayers([...layers,new Layer(inputPoint.tag,layers.length)]);
     //groupInputPointDataSet(inputPoint,groupedInputPointData);
-    //setLayers(Object.keys(groupedInputPointDataSet));
   },[inputPoint])
 
   useEffect(()=>{
@@ -223,15 +219,6 @@ export function MapProvider({children}:MapProviderProps):React.ReactElement{
     }
     setGroupedInputPointData(clone);
   }
-
-  // useEffect(()=>{
-  //   inputPointDataSet.map(data=>{
-  //     if (data === null) return;
-  //     console.log('initialization',data,groupedInputPointDataSet);
-  //     groupInputPointDataSet(data,groupedInputPointDataSet);
-  //   })
-  //   setLayers(Object.keys(groupedInputPointDataSet));
-  // },[inputPointDataSet])
 
   const mapState = useMemo(():MapState=>{
     return{

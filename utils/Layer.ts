@@ -4,6 +4,7 @@ export type LayerPayload = {
   name: string;
   index:string;
   isVisible: boolean;
+  color: string;
 }
 
 export class Layer{

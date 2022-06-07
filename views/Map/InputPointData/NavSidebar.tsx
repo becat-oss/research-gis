@@ -6,6 +6,7 @@ import { Color, ColorPicker } from "material-ui-color";
 import Sidebar from "../../../components/Sidebar";
 import { useMapContext } from "../mapContext";
 import { Layer } from "../../../utils/Layer";
+import { createPoint, fetchPoints } from "../../../pages/api/KeyRequests";
 
 interface Props{
   //layers:string[]
@@ -17,31 +18,32 @@ interface Props{
 
 // 
 export function Content({layer}:Props):React.ReactElement{
-  const { addVisibleLayers,removeVisibleLayers,updateLayers } = useMapContext();
+  const { updateLayers } = useMapContext();
 
-  //const [, setVisible] = useState<boolean>(layer.isVisible);
-  // const visibleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setVisible(event.target.checked);
-  //   layer.isVisible = event.target.checked;
-  //   updateLayers(layer);
+  //const [, setColor] = useState<Color>();
+  const colorChange = (color: Color) => {
+    //setColor(color);
+    //console.log(color);
+    layer.color = "#" + color.hex;
+    updateLayers(layer);
+};
 
-  // };
-  //console.log('layer in sidebar',layer);
   return (
     <>
       <Grid item xs={6}>
-          {layer.name}
+        {layer.name}
       </Grid>
       <Grid item xs={3}>
-          <FormControlLabel control={<Checkbox  defaultChecked 
-            onChange={e=>{
-              layer.isVisible = e.target.checked;
-              updateLayers(layer);
-            }}/>} label="Visible" />
+        <FormControlLabel control={<Checkbox  defaultChecked 
+          onChange={e=>{
+            layer.isVisible = e.target.checked;
+            updateLayers(layer);
+          }}/>} label="Visible" />
       </Grid>
-      {/* <Grid item xs={3}>
-          <ColorPicker value={layer.color} onChange={colorChange} hideTextfield/>
-      </Grid> */}
+      {/* colorpicker部分の実装をPrasunにしてもらう */}
+      <Grid item xs={3}>
+        <ColorPicker value={layer.color} onChange={colorChange} deferred/>
+      </Grid>
     </>
     // <FormGroup>
     //   <FormLabel component="label">Tags</FormLabel>
@@ -66,8 +68,29 @@ export function Content({layer}:Props):React.ReactElement{
   )
 }
 
+
+
 export default function NavSidebar():React.ReactElement{
-  const {layers} = useMapContext();
+  const {layers,inputPointSet} = useMapContext();
+
+  //point、layerデータを保存できるようにする
+  const uploadData = () =>{
+    //既に登録されているデータを確認する
+    // fetchPoints().then(res=>{
+
+    // });
+    inputPointSet.forEach(point=>{
+      console.log('point',point);
+      //idがない場合はデータがuploadされたことがないということ
+      if(point.id === undefined){
+        createPoint(point);
+      }
+    });
+    //保存がうまくいったかどうかをユーザーに知らせたい
+    // layers.forEach(layer=>{
+
+    // });
+  }
   //console.log('layers',layers);
   return(
     <Sidebar anchor="left" swipeable={false}>
@@ -89,7 +112,9 @@ export default function NavSidebar():React.ReactElement{
       >
         <Content layers={layers}/>
       </Box> */}
-      <Button variant="contained">
+      <Button variant="contained" onClick={() => {
+        uploadData();
+      }}>
         保存
       </Button>
     </Sidebar>

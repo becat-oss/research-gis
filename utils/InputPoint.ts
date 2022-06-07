@@ -3,7 +3,7 @@ import { Coordinate, InputPointData, InputPointPayload } from "../AppTypes";
 
 
 export class InputPoint{
-  id: string;
+  id: string|undefined;
   tag: string;
   coordinate: Coordinate;
   value: number;
@@ -13,9 +13,8 @@ export class InputPoint{
     //自動的にidを生成する
     if (inputPoint.id) {
       this.id = inputPoint.id
-    }else{
-      this.id = uuidv4();
     }
+
     this.tag = inputPoint.tag;
     this.coordinate = {
       lat: inputPoint.coordinate[0],
@@ -23,5 +22,14 @@ export class InputPoint{
     },
     this.value = inputPoint.value;
     this.description = inputPoint.description;
+  }
+
+  toPayload():InputPointPayload{
+    return {
+      tag: this.tag,
+      coordinate: [this.coordinate.lat,this.coordinate.lng],
+      value: this.value,
+      description: this.description
+    }
   }
 }
