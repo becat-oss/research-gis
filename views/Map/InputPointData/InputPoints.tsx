@@ -2,25 +2,28 @@ import React,{useRef} from "react";
 import { FeatureGroup, LayersControl, Popup, Tooltip } from "react-leaflet";
 import { Circle } from "react-leaflet";
 import { InputPointData } from "../../../AppTypes";
+import { InputPoint } from "../../../utils/InputPoint";
 import { useMapContext } from "../mapContext";
 import { useInputPointDataContext } from "./InputPointDataContext";
 
 // interface Props{
-//   inputPointDataSet:InputPointData[];
+//   inputPointDataSet:InputPoint[];
+//   //color: string
 // }
 
-export function drawLayer(inputPointDataSet:InputPointData[]):JSX.Element[]{
-  const {ref} =useInputPointDataContext();
+export function drawLayer(inputPointSet:InputPoint[],color:string):JSX.Element[]{
+  //const {ref} =useInputPointDataContext();
+  console.log('inputPointSet',inputPointSet);
   return(
-    inputPointDataSet.map((pointData:InputPointData,index:number)=>{
+    inputPointSet.map((pointData:InputPoint,index:number)=>{
 
       return (
-        <FeatureGroup ref={ref}>      
+        <FeatureGroup>      
           <Circle 
             radius = {pointData.value*10}
             center={[pointData.coordinate.lat, pointData.coordinate.lng]}
             key={pointData.id}
-            
+            color ={color}
           >
             <Tooltip key={pointData.id}>
               <p>タグ:{pointData.tag}</p>
@@ -35,17 +38,19 @@ export function drawLayer(inputPointDataSet:InputPointData[]):JSX.Element[]{
 }
 
 export default function InputPoints():React.ReactElement{
-  const {groupedInputPointDataSet,visibleLayers} = useMapContext();
-  const {ref} = useInputPointDataContext();
+  const {groupedInputPointData,layers,inputPointSet} = useMapContext();
   //groupedInputPointDataSetの生成がうまくいってない
-  console.log('groupedInputPointDataSet',groupedInputPointDataSet);
   //前描かれているジオメトリは一度消すようにする
+  const visibleLayers = layers.filter(layer => layer.isVisible);
+  // const visibleLayerNames = visibleLayers.map(layer => layer.name);
+  // const visiblePoints = inputPointSet.filter(obj => visibleLayerNames.includes(obj.tag))
   return(
     <>
-      {visibleLayers.map(key=>{
+      {visibleLayers.map(layer=>{
         return (
-          <div key={key}>
-            {drawLayer(Array.from(groupedInputPointDataSet[key].values()))}
+          <div key={layer.name}>
+            {drawLayer(inputPointSet.filter(obj => layer.name.includes(obj.tag)),layer.color)}
+            {/* {drawLayer(Array.from(groupedInputPointData[layer.name].values()),layer.color)} */}
           </div>
           );
       })}

@@ -20,7 +20,7 @@ export function Map(){
   const { choroplethData,ref } = useMapContext();
 
   return(
-    <MapContainer center={[33.58,130.22]} zoom={12} scrollWheelZoom={true}  style={{ height: "100vh" ,marginLeft:"200px"}}>
+    <MapContainer center={[33.58,130.22]} zoom={12} scrollWheelZoom={true}  style={{ height: "100vh" ,marginLeft:"300px"}}>
       <InputPoint />
 
       {/* <LayersControl position="topright">
