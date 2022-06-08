@@ -6,7 +6,7 @@ import { Color, ColorPicker } from "material-ui-color";
 import Sidebar from "../../../components/Sidebar";
 import { useMapContext } from "../mapContext";
 import { Layer } from "../../../utils/Layer";
-import { createLayer, createPoint, fetchPoints } from "../../../pages/api/KeyRequests";
+import { createLayer, createPoint, fetchLayers, fetchPoints } from "../../../pages/api/KeyRequests";
 
 interface Props{
   //layers:string[]
@@ -41,9 +41,9 @@ export function Content({layer}:Props):React.ReactElement{
           }}/>} label="Visible" />
       </Grid>
       {/* colorpicker部分の実装をPrasunにしてもらう */}
-      <Grid item xs={3}>
+      {/* <Grid item xs={3}>
         <ColorPicker value={layer.color} onChange={colorChange} deferred/>
-      </Grid>
+      </Grid> */}
     </>
     // <FormGroup>
     //   <FormLabel component="label">Tags</FormLabel>
@@ -74,21 +74,32 @@ export default function NavSidebar():React.ReactElement{
   const {layers,inputPointSet} = useMapContext();
 
   //point、layerデータを保存できるようにする
-  const uploadData = () =>{
+  const uploadData = async () =>{
     //既に登録されているデータを確認する
     // fetchPoints().then(res=>{
 
     // });
-    inputPointSet.forEach(point=>{
-      //idがない場合はデータがuploadされたことがないということ
-      if(point.id === undefined){
-        createPoint(point);
-      }
-    });
+    // inputPointSet.forEach(point=>{
+    //   //idがない場合はデータがuploadされたことがないということ
+    //   if(point.id === undefined){
+    //     createPoint(point);
+    //   }
+    // });
     //TODO:保存がうまくいったかどうかをユーザーに知らせたい
+    console.log('checkUploadedData');
+    //既に登録されているデータを確認する
+    async function checkUploadedData():Promise<string[]>{
+      const resLayers = await fetchLayers();
+      return resLayers.map(layer=>layer.name)
+    };
+
+    const uploadedLayerName = await checkUploadedData();
+    console.log('uploadedLayerName',uploadedLayerName);
     layers.forEach(layer=>{
       console.log('layer',layer);
-
+      //選択的にデータをアップロードする
+      if(uploadedLayerName.includes(layer.name)) return;
+      createLayer(layer);
       //TODO:graphqlを理解する
       // if(layer.id === undefined){
       //   createLayer(layer);

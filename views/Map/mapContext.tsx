@@ -127,8 +127,10 @@ export function MapProvider({children}:MapProviderProps):React.ReactElement{
 
   const updateLayers = useCallback((layer:Layer)=>{
     //こうやらないといけない必要性はimmutableを理解する必要
-    const clone = JSON.parse(JSON.stringify(layers));
-    clone[layer.index]=layer;
+    const clone:Layer[] = JSON.parse(JSON.stringify(layers));
+    //clone[layer.index]=layer;
+    clone.filter(l=>l.index===layer.index)[0]=layer;
+    console.log(clone);
     setLayers(clone);
   },[layers])
 

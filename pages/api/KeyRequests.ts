@@ -30,8 +30,8 @@ export async function fetchPoints(): Promise<InputPoint[]> {
 }
 
 const layerQuery = `
-  query listGisLayers {
-    listGisLayers {
+  query listGisLayerDevs {
+    listGisLayerDevs {
       items {
         color
         isVisible
@@ -46,9 +46,10 @@ const layerQuery = `
 //TODO: Layerをデータベースから取得するコードを書く
 export async function fetchLayers(): Promise<Layer[]> {
   const res = await API.graphql(graphqlOperation(layerQuery))
+  console.log('res',res);
   //型を変換する
   //@ts-ignore
-  const layers = res.data.listGisLayers.items.map((layer:LayerPayload) => {
+  const layers = res.data.listGisLayerDevs.items.map((layer:LayerPayload) => {
     return new Layer(layer.name,Number(layer.index),layer.id,layer.isVisible,layer.color);
   })
 
@@ -83,8 +84,8 @@ export async function createPoint(point:InputPoint) {
 }
 
 const layerMutation = `
-  mutation createGisLayer($creategislayerinput: CreateGisLayerInput!) {
-    createGisLayer(input: $creategislayerinput){
+  mutation createGisLayerDev($creategislayerinput: CreateGisLayerDevInput!) {
+    createGisLayerDev(input: $creategislayerinput){
       color
       index
       isVisible
