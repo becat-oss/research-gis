@@ -6,7 +6,7 @@ import { Color, ColorPicker } from "material-ui-color";
 import Sidebar from "../../../components/Sidebar";
 import { useMapContext } from "../mapContext";
 import { Layer } from "../../../utils/Layer";
-import { createPoint, fetchPoints } from "../../../pages/api/KeyRequests";
+import { createLayer, createPoint, fetchPoints } from "../../../pages/api/KeyRequests";
 
 interface Props{
   //layers:string[]
@@ -80,16 +80,20 @@ export default function NavSidebar():React.ReactElement{
 
     // });
     inputPointSet.forEach(point=>{
-      console.log('point',point);
       //idがない場合はデータがuploadされたことがないということ
       if(point.id === undefined){
         createPoint(point);
       }
     });
-    //保存がうまくいったかどうかをユーザーに知らせたい
-    // layers.forEach(layer=>{
+    //TODO:保存がうまくいったかどうかをユーザーに知らせたい
+    layers.forEach(layer=>{
+      console.log('layer',layer);
 
-    // });
+      //TODO:graphqlを理解する
+      // if(layer.id === undefined){
+      //   createLayer(layer);
+      // }
+    });
   }
   //console.log('layers',layers);
   return(

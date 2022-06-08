@@ -19,10 +19,10 @@ const query = `
 
 export async function fetchPoints(): Promise<InputPoint[]> {
   const res = await API.graphql({ query })
+  console.log('res',res);
   //型を変換する
   //@ts-ignore
   const points = res.data.listGis.items.map(point => {
-
     return new InputPoint(point as InputPointPayload)
   })
 
@@ -43,23 +43,13 @@ const layerQuery = `
   }
 `
 
-export async function createLayer(layer:LayerPayload) {
-  //coordinateの型を変換する必要
-  //とりあえずcreateGis mutationに関してうまくいくようにする
-  await API.graphql({
-    query: mutation,
-    variables: layer
-  })
-}
-
 //TODO: Layerをデータベースから取得するコードを書く
 export async function fetchLayers(): Promise<Layer[]> {
   const res = await API.graphql(graphqlOperation(layerQuery))
   //型を変換する
   //@ts-ignore
   const layers = res.data.listGisLayers.items.map((layer:LayerPayload) => {
-    console.log('layer',layer)
-    return new Layer(layer.name,Number(layer.index),layer.isVisible,layer.color);
+    return new Layer(layer.name,Number(layer.index),layer.id,layer.isVisible,layer.color);
   })
 
   return layers
@@ -90,4 +80,31 @@ export async function createPoint(point:InputPoint) {
     variables: params
   })
   console.log('point',point)
+}
+
+const layerMutation = `
+  mutation createGisLayer($creategislayerinput: CreateGisLayerInput!) {
+    createGisLayer(input: $creategislayerinput){
+      color
+      index
+      isVisible
+      name
+      userId
+    }
+  }
+`
+
+export async function createLayer(layer:Layer) {
+  //coordinateの型を変換する必要
+  //とりあえずcreateGis mutationに関してうまくいくようにする
+  console.log('layer.toPayload()',layer.toPayload());
+  const params =  {
+    "creategislayerinput": layer.toPayload()
+  }
+
+  await API.graphql({
+    query: layerMutation,
+    variables: params
+  })
+  
 }

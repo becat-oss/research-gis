@@ -167,16 +167,7 @@ export function MapProvider({children}:MapProviderProps):React.ReactElement{
 
       const resLayers = await fetchLayers();
       setLayers(resLayers);
-      // response.map(data=>{
-      //   if (data === null) return;
-      //   //groupInputPointDataSet(data,groupedInputPointData);
-      //   //setLayers(Object.keys(groupedInputPointDataSet));
-      //   const newLayers=Object.keys(groupedInputPointData).map((key,index)=>{
-      //     return new Layer(key,index);
-      //   });
-      //   //FIXME:setLayersに一本化したい
-      //   setLayers(newLayers);
-      // })
+
     };
     //FIXME:なぜか2回呼ばれている。初期描画時に一回だけ呼ぶようにしたい
     initializeData();

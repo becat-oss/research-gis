@@ -1,5 +1,6 @@
 
 export type LayerPayload = {
+  id?: string;
   userId: string;
   name: string;
   index:string;
@@ -8,16 +9,29 @@ export type LayerPayload = {
 }
 
 export class Layer{
+  id: string|undefined;
   name: string;
   color: string;
   index: number;
   isVisible = true;
 
-  constructor(name: string, index: number,isVisible=true,color = '#0000FF',){
+  constructor(name: string, index:number, id:string|undefined=undefined,isVisible=true,color = '#0000FF',){
     this.name = name;
+    if (id) {
+      this.id = id
+    }
     this.color = color;
     this.index = index;
     this.isVisible = isVisible;
   }
 
+  toPayload():LayerPayload{
+    return{
+      userId: 'admin',
+      name: this.name,
+      index: this.index.toString(),
+      isVisible: this.isVisible,
+      color: this.color
+    }
+  }
 }
