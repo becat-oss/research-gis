@@ -16,9 +16,8 @@ export function drawLayer(inputPointSet:InputPoint[],color:string):JSX.Element[]
   console.log('inputPointSet',inputPointSet);
   return(
     inputPointSet.map((pointData:InputPoint,index:number)=>{
-
       return (
-        <FeatureGroup>      
+        <FeatureGroup key={index}>      
           <Circle 
             radius = {pointData.value*10}
             center={[pointData.coordinate.lat, pointData.coordinate.lng]}
