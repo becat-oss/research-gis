@@ -24,7 +24,7 @@ const Transition = React.forwardRef(function Transition(props: TransitionProps &
 interface Props {
   children: React.ReactNode;
   title?: string;
-  width?: number;
+  width?: number| string;
   anchor?: 'right' | 'left';
   swipeable?: boolean;
   drawerProps?: DrawerProps;
