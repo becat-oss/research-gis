@@ -132,6 +132,7 @@ export function MapProvider({children}:MapProviderProps):React.ReactElement{
     const index = clone.findIndex(l=>l.index===layer.index);
     if(index>=0){
       clone[index] = layer;
+      console.log("update layers from mapContext")
       setLayers(clone);
     }
     // clone.filter(l=>l.index===layer.index)[0]=layer;
@@ -173,6 +174,8 @@ export function MapProvider({children}:MapProviderProps):React.ReactElement{
       setInputPointSet(response);
 
       const resLayers = await fetchLayers();
+      console.log(" useEffect1 from mapContext.tsx");
+
       setLayers(resLayers);
 
     };
@@ -187,6 +190,7 @@ export function MapProvider({children}:MapProviderProps):React.ReactElement{
     setInputPointSet([...inputPointSet,inputPoint]);
     //TODO: layerも追加する
     if (layers.filter(layer=>layer.name.includes(inputPoint.tag)).length > 0) return;
+    console.log(" useEffect2 from mapContext.tsx");
     setLayers([...layers,new Layer(inputPoint.tag,layers.length)]);
     //groupInputPointDataSet(inputPoint,groupedInputPointData);
   },[inputPoint])
