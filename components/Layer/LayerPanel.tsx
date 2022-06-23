@@ -1,4 +1,6 @@
 import { Grid, Button } from "@mui/material";
+import Divider from "@mui/material/Divider";
+import CssBaseline from '@mui/material/CssBaseline';
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import { fetchLayers, createLayer } from "../../pages/api/KeyRequests";
@@ -45,10 +47,10 @@ export default function LayerPanel(): React.ReactElement {
   //console.log('layers',layers);
   return (
     <Sidebar anchor="left" swipeable={false}>
-      <List>
+      <List style={{ padding: "0 5px 0 5px" }}>
         {layers.map((layer) => {
           return (
-            <ListItem key={layer.index}>
+            <ListItem key={layer.index} divider={true}>
               <LayerUI layer={layer} />
             </ListItem>
           );
@@ -66,6 +68,7 @@ export default function LayerPanel(): React.ReactElement {
           <Content layers={layers}/>
         </Box> */}
       <Button
+        style={{ margin: "10px" }}
         variant="contained"
         onClick={() => {
           uploadData();

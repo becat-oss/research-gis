@@ -73,7 +73,7 @@ export default function LayerUI({ layer }: Props): React.ReactElement {
       </Grid>
       {isColorPickerVisible && (
         <Grid item xs={12}>
-          <ColorPicker color={color} width={248} onChange={setColor} />
+          <ColorPicker color={color} width={220} onChange={setColor} />
           <Button variant="contained" onClick={updateColor}>
             Set Color
           </Button>
