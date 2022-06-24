@@ -25,6 +25,10 @@ export class Layer{
     this.isVisible = isVisible;
   }
 
+  clone():Layer{
+    return new Layer(this.name, this.index, this.id, this.isVisible, this.color);
+  }
+
   toPayload():LayerPayload{
     return{
       userId: 'admin',

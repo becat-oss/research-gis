@@ -6,7 +6,7 @@ Amplify.configure({
   aws_appsync_region: "ap-northeast-1", // Stack region
   aws_appsync_graphqlEndpoint: "https://hmvhhyra3fexhdvufvei2vadsy.appsync-api.ap-northeast-1.amazonaws.com/graphql", // AWS AppSync endpoint
   aws_appsync_authenticationType: "API_KEY", //Primary AWS AppSync authentication type
-  aws_appsync_apiKey: "da2-7vz52pknzfhcjfqilnktiw6xp4" // AppSync API Key
+  aws_appsync_apiKey: "da2-cj7tuazdtra2nltlj2sdyqywnq" // AppSync API Key
 });
 
 function MyApp({ Component, pageProps }: AppProps) {

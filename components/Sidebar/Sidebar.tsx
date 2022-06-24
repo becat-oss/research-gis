@@ -15,7 +15,7 @@ import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import { useWindowSize, useMobile } from '../../utils/useWindowSize';
 import { SidebarProvider, useSidebarContext } from './SidebarContext';
 
-export const baseSidebarWidth = 240;
+export const baseSidebarWidth = 260;
 
 const Transition = React.forwardRef(function Transition(props: TransitionProps & { children: React.ReactElement }, ref: React.Ref<unknown>) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -24,7 +24,7 @@ const Transition = React.forwardRef(function Transition(props: TransitionProps &
 interface Props {
   children: React.ReactNode;
   title?: string;
-  width?: number;
+  width?: number| string;
   anchor?: 'right' | 'left';
   swipeable?: boolean;
   drawerProps?: DrawerProps;
@@ -78,7 +78,7 @@ function SidebarContent({ children, title, width, anchor = 'right', swipeable = 
       {...drawerProps}
     >
       <Toolbar />
-      <Box style={{ overflowY: swipeable ? 'auto' : 'hidden', maxHeight: window.innerHeight - (Number(theme.mixins.toolbar.minHeight) || 56), overflowX: 'hidden' }}>{children}</Box>
+      <Box>{children}</Box>
     </Drawer>
   );
 }

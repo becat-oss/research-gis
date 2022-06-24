@@ -6,7 +6,6 @@ import { useMapContext } from "../mapContext";
 import InputDialog from "./InputDialog";
 import { useInputPointDataContext } from "./InputPointDataContext";
 import InputPoints from "./InputPoints";
-import NavSidebar from "./NavSidebar";
 
 export default function InputPoint():React.ReactElement|null{
   const [coordinate,setCoordinate] = useState<Coordinate|null>(null);
@@ -37,8 +36,7 @@ export default function InputPoint():React.ReactElement|null{
     // <FeatureGroup>
     <>
       <InputDialog open={open} coordinate={coordinate} handleClose = {handleClose}/>
-      <InputPoints />
-      <NavSidebar />
+      <InputPoints />      
     </>
     // </FeatureGroup>
   )
