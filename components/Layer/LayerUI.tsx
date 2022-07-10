@@ -50,7 +50,7 @@ export default function LayerUI({ layer }: Props): React.ReactElement {
   },[color.hex, clonedLayer, toggleColorPickerVisibility, updateLayers]);
 
   return (
-    <Grid container xs={12} justifyContent="right" alignItems="center">
+    <Grid container justifyContent="right" alignItems="center">
       <Grid item xs={7} justifyContent="left">
         <h3>{clonedLayer.name}</h3>
       </Grid>

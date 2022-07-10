@@ -7,6 +7,7 @@ import { fetchLayers, createLayer } from "../../pages/api/KeyRequests";
 import { useMapContext } from "../../views/Map/mapContext";
 import Sidebar from "../Sidebar";
 import LayerUI from "./LayerUI";
+import { Layer } from "../../utils/Layer";
 
 export default function LayerPanel(): React.ReactElement {
   const { layers, inputPointSet } = useMapContext();
@@ -26,22 +27,21 @@ export default function LayerPanel(): React.ReactElement {
     //TODO:保存がうまくいったかどうかをユーザーに知らせたい
     console.log("checkUploadedData");
     //既に登録されているデータを確認する
-    async function checkUploadedData(): Promise<string[]> {
-      const resLayers = await fetchLayers();
-      return resLayers.map((layer) => layer.name);
+    async function filterChangedLayers(editedLayers:Layer[]): Promise<Layer[]> {
+      const resLayers = await fetchLayers(); //Todo Optimization can be done by fetching the related layers only.
+      const filteredLayers = editedLayers.slice();
+      for(const layer of resLayers){
+        const index = filteredLayers.findIndex(l=>l.isEqual(layer))
+        if(index !== -1){
+          filteredLayers.splice(index,1);
+        }
+      }
+      return filteredLayers;
     }
 
-    const uploadedLayerName = await checkUploadedData();
-    console.log("uploadedLayerName", uploadedLayerName);
-    layers.forEach((layer) => {
-      console.log("layer", layer);
-      //選択的にデータをアップロードする
-      if (uploadedLayerName.includes(layer.name)) return;
+    const editedLayers = await filterChangedLayers(layers);
+    editedLayers.forEach((layer) => {
       createLayer(layer);
-      //TODO:graphqlを理解する
-      // if(layer.id === undefined){
-      //   createLayer(layer);
-      // }
     });
   };
   //console.log('layers',layers);

@@ -29,6 +29,19 @@ export class Layer{
     return new Layer(this.name, this.index, this.id, this.isVisible, this.color);
   }
 
+  isEqual(layer: Layer): boolean{
+    if (
+      this.id === layer.id &&
+      this.name === layer.name &&
+      this.color === layer.color &&
+      this.index === layer.index &&
+      this.isVisible === layer.isVisible
+    ) {
+      return true;
+    }
+    return false;
+  }
+
   toPayload():LayerPayload{
     return{
       userId: 'admin',
